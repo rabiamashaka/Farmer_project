@@ -14,7 +14,7 @@
     </div>
     <nav class="space-y-2 text-sm">
         <a href="{{ route('dashboard') }}" class="flex items-center px-3 py-2 bg-white text-green-700 rounded font-medium">
-            
+            <!-- dashboard start -->
             Dashboard
         </a>
         <a href="{{ route('content.index') }}" class="block px-3 py-2 text-green-100 hover:text-white hover:bg-green-700 rounded">Content Management</a>
