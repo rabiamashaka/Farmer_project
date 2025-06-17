@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\weatherMarketController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\FarmerController;
+use App\Http\Controllers\sms_logs;
+use App\Http\Controllers\analytics;
 
 Route::get('/', function () {
     return view('welcome');
@@ -40,3 +42,5 @@ Route::resource('farmer', App\Http\Controllers\FarmerController::class);
     Route::get('/weather-market', [WeatherMarketController::class, 'show'])
     ->middleware(['auth'])
     ->name('weather-market');
+Route::get('/sms-logs', [sms_logs::class, 'smsLogs'])->name('sms.logs');
+Route::get('/analytics', [analytics::class, 'analytics'])->name('analytics');
