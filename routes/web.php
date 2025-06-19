@@ -1,46 +1,40 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\weatherMarketController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WeatherMarketController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\FarmerController;
-use App\Http\Controllers\sms_logs;
-use App\Http\Controllers\analytics;
+use App\Http\Controllers\sms_Logs;
+use App\Http\Controllers\Analytics;
 
+// Public route
 Route::get('/', function () {
     return view('welcome');
 });
 
+// Dashboard route (protected)
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+// Auth routes
+require __DIR__.'/auth.php';
+
+// Authenticated user routes
+Route::middleware(['auth'])->group(function () {
+
+    // Profile management
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Farmer & Content management (RESTful)
+    Route::resource('content', ContentController::class);
+    Route::resource('farmer', FarmerController::class);
+
+    // Other authenticated routes
+    Route::get('/weather-market', [WeatherMarketController::class, 'show'])->name('weather-market');
+    Route::get('/sms-log', [sms_Logs::class, 'smsLogs'])->name('sms.logs');
+    Route::get('/analytics', [Analytics::class, 'analytics'])->name('analytics');
 });
-
-require __DIR__.'/auth.php';
-
-Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-
-    Route::get('/content', [ContentController::class, 'index'])->name('content.index');
-    
-
-    Route::get('/farmer', [FarmerController::class, 'index'])->name('farmer.index');
-});
-Route::resource('content', \App\Http\Controllers\ContentController::class);
-Route::resource('farmer', App\Http\Controllers\FarmerController::class);
-
-
-
-    Route::get('/weather-market', [WeatherMarketController::class, 'show'])
-    ->middleware(['auth'])
-    ->name('weather-market');
-Route::get('/sms-logs', [sms_logs::class, 'smsLogs'])->name('sms.logs');
-Route::get('/analytics', [analytics::class, 'analytics'])->name('analytics');

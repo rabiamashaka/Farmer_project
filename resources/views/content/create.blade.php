@@ -44,10 +44,11 @@
 
                     <!-- Title -->
                     <div class="mb-4">
-                        <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+                       <x-input-label for="title">Title</x-input-label>
                         <input type="text" name="title" id="title" required
                             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500">
-                    </div>
+                   <x-input-error :messages="$errors->get('title')" class="mt-2" />
+                        </div>
 
                    <!-- Type -->
 <div class="mb-4">
@@ -64,8 +65,8 @@
 </div>
 
 <!-- Urgency Level -->
-<div class="mb-4">
-    <label for="urgency" class="block text-sm font-medium text-gray-700">Urgency Level</label>
+<div class="mb-4">  
+    <x-input-label for="title">Urgency Level</x-input-label>
     <select name="urgency" id="urgency" required
         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 text-base py-2 px-3">
         <option value="High">High</option>
@@ -76,7 +77,7 @@
 
                     <!-- Content Body -->
                     <div class="mb-4">
-                        <label for="content" class="block text-sm font-medium text-gray-700">Content</label>
+                        <x-input-label for="title">Content</x-input-label>
                         <textarea name="content" id="content" rows="5" required
                             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"></textarea>
                     </div>
@@ -87,10 +88,9 @@
                             class="inline-block px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">
                             Cancel
                         </a>
-                        <button type="submit"
-                            class="inline-block px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
-                            Create
-                        </button>
+                           <x-primary-button class="ms-3">
+                {{ __('create') }}
+            </x-primary-button>
                     </div>
                 </form>
             </div>
