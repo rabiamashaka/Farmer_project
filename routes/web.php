@@ -7,10 +7,11 @@ use App\Http\Controllers\ContentController;
 use App\Http\Controllers\FarmerController;
 use App\Http\Controllers\sms_Logs;
 use App\Http\Controllers\Analytics;
+use App\Http\Controllers\SmsCampaignsController;
 
 // Public route
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/login', function () {
+    return view('login');
 });
 
 // Dashboard route (protected)
@@ -32,6 +33,10 @@ Route::middleware(['auth'])->group(function () {
     // Farmer & Content management (RESTful)
     Route::resource('content', ContentController::class);
     Route::resource('farmer', FarmerController::class);
+     Route::resource('sms_campaigns', SmsCampaignsController::class);
+     Route::post('/sms_campaigns/quick-sms', [SmsCampaignsController::class, 'sendQuickSms'])->name('sms_campaigns.quickSms');
+
+
 
     // Other authenticated routes
     Route::get('/weather-market', [WeatherMarketController::class, 'show'])->name('weather-market');
