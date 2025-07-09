@@ -58,16 +58,19 @@
                     <x-input-error :messages="$errors->get('phone')" class="mt-2" />
                         </div>
 
-                    <!-- Location -->
-                    <div class="mb-4">
-                          <x-input-label for="title">
-                            location
-                          </x-input-label>
-                        <input type="text" name="location" id="location" required
-                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500">
-                        <x-input-error :messages="$errors->get('name')" />
+                  <!-- Location -->
+<div class="mb-4">
+    <x-input-label for="location">Location</x-input-label>
+    <select name="location" id="location" required
+        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 text-base py-2 px-3">
+        <option value="">Select region</option>
+        @foreach($regions as $id => $region)
+            <option value="{{ $region }}">{{ $region }}</option>
+        @endforeach
+    </select>
+    <x-input-error :messages="$errors->get('location')" class="mt-2" />
+</div>
 
-                        </div>
 
                     <!-- Farming Type -->
                     <div class="mb-4">
@@ -82,19 +85,20 @@
                             <x-input-error :messages="$errors->get('farming_type')" class="mt-2" />
                     </div>
 
-                    <!-- Crops Grown -->
-                    <div class="mb-4">
-                          <x-input-label for="title">Crops Grown</x-input-label>
-                        <div class="flex flex-wrap gap-4">
-                            @foreach(['Maize', 'Rice', 'Beans', 'Cassava', 'Sorghum', 'Tomatoes', 'Onions'] as $crop)
-                                <label class="flex items-center space-x-2 text-sm text-gray-700">
-                                    <input type="checkbox" name="crops[]" value="{{ $crop }}" class="rounded text-green-600">
-                                    <span>{{ $crop }}</span>
-                                </label>
-                            @endforeach
-                        </div>
-                            <x-input-error :messages="$errors->get('crops[]')" class="mt-2" />
-                    </div>
+                   <!-- Crops Grown -->
+<div class="mb-4">
+    <x-input-label for="crops">Crops Grown</x-input-label>
+    <div class="flex flex-wrap gap-4">
+        @foreach($crops as $id => $crop)
+            <label class="flex items-center space-x-2 text-sm text-gray-700">
+                <input type="checkbox" name="crops[]" value="{{ $id }}" class="rounded text-green-600">
+                <span>{{ $crop }}</span>
+            </label>
+        @endforeach
+    </div>
+    <x-input-error :messages="$errors->get('crops')" class="mt-2" />
+</div>
+
  
                     <!-- Buttons -->
                     <div class="flex justify-end gap-3">

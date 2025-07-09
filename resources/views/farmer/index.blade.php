@@ -48,9 +48,50 @@
 
             <!-- Recent Activity Section -->
             <div class="bg-white p-6 shadow rounded">
-                <h3 class="text-lg font-semibold mb-2">farmers List</h3>
-                <p class="text-sm text-gray-500">No recent activity found.</p>
-            </div>
+    <h3 class="text-lg font-semibold mb-4">Farmers List</h3>
+
+    @if($farmers->isEmpty())
+        <p class="text-sm text-gray-500">No farmers found.</p>
+    @else
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-green-100">
+                    <tr>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-green-700 uppercase tracking-wider">#</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-green-700 uppercase tracking-wider">Name</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-green-700 uppercase tracking-wider">Phone</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-green-700 uppercase tracking-wider">location</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-green-700 uppercase tracking-wider">Crop</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-green-700 uppercase tracking-wider">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+    @foreach($farmers as $index => $farmer)
+        <tr>
+            <td class="px-4 py-2 text-sm text-gray-700">{{ $index + 1 }}</td>
+            <td class="px-4 py-2 text-sm text-gray-700">{{ $farmer->name }}</td>
+            <td class="px-4 py-2 text-sm text-gray-700">{{ $farmer->phone }}</td>
+            <td class="px-4 py-2 text-sm text-gray-700">{{ $farmer->location }}</td>
+            <td class="px-4 py-2 text-sm text-gray-700">{{ $farmer->farming_type }}</td>
+            <td class="px-4 py-2 text-sm text-gray-700">{{ $farmer->crops->pluck('name')->join(', ') }}</td>
+            <td class="px-4 py-2 text-sm">
+                <a href="{{ route('farmer.edit', $farmer->id) }}" class="text-blue-600 hover:underline text-sm">Edit</a> |
+                <form action="{{ route('farmer.destroy', $farmer->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Are you sure?');">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="text-red-600 hover:underline text-sm">Delete</button>
+                </form>
+            </td>
+        </tr>
+    @endforeach
+</tbody>
+
+                
+            </table>
+        </div>
+    @endif
+</div>
+
         </main>
     </div>
 </x-app-layout>
