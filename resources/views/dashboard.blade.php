@@ -1,70 +1,82 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+        <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Dashboard') }}
         </h2>
     </x-slot>
 
     <div class="flex min-h-screen bg-gray-100">
         <!-- Sidebar -->
-        <aside class="w-64 bg-green-600 text-white shadow-sm p-6">
-            <div class="mb-6">
-                <h1 class="text-2xl font-bold">Admin Panel</h1>
-                <p class="text-sm">Admin Panel</p>
-            </div>
-            <nav class="space-y-2 text-sm">
-                <a href="{{ route('dashboard') }}" class="flex items-center px-3 py-2 bg-white text-green-700 rounded font-medium">
-                    Dashboard
-                </a>
-                <a href="{{ route('content.index') }}" class="block px-3 py-2 text-green-100 hover:text-white hover:bg-green-700 rounded">Content Management</a>
-                <a href="{{ route('farmer.index') }}" class="block px-3 py-2 text-green-100 hover:text-white hover:bg-green-700 rounded">Farmer Management</a>
-                <a href="{{ route('weather-market') }}" class="block px-3 py-2 text-green-100 hover:text-white hover:bg-green-700 rounded">Weather & Market Data</a>
-                <a href="{{ route('sms_campaigns.index') }}" class="block px-3 py-2 text-green-100 hover:text-white hover:bg-green-700 rounded">SMS Campaings</a>
-                <a href="{{ route('sms.logs') }}"class="block px-3 py-2 text-green-100 hover:text-white hover:bg-green-700 rounded">SMS Logs</a>
-                <a href="{{ route('analytics') }}" class="block px-3 py-2 text-green-100 hover:text-white hover:bg-green-700 rounded">Analytics</a>
-            </nav>
-            <div class="mt-10 text-sm text-white">⚙️ Settings</div>
-        </aside>
+      <aside class="w-64 bg-green-600 text-white shadow-sm p-6">
+    <div class="mb-6">
+        <h1 class="text-2xl font-bold">Admin Panel</h1>
+        <p class="text-sm"></p>
+    </div>
+    <nav class="space-y-2 text-sm">
+        <a href="{{ route('dashboard') }}"
+           class="block px-3 py-2 rounded font-medium {{ request()->routeIs('dashboard') ? 'bg-white text-green-700' : 'text-green-100 hover:text-white hover:bg-green-700' }}">
+           Dashboard
+        </a>
+        <a href="{{ route('content.index') }}"
+           class="block px-3 py-2 rounded font-medium {{ request()->routeIs('content.*') ? 'bg-white text-green-700' : 'text-green-100 hover:text-white hover:bg-green-700' }}">
+           Content Management
+        </a>
+        <a href="{{ route('farmer.index') }}"
+           class="block px-3 py-2 rounded font-medium {{ request()->routeIs('farmer.*') ? 'bg-white text-green-700' : 'text-green-100 hover:text-white hover:bg-green-700' }}">
+           Farmer Management
+        </a>
+        <a href="{{ route('weather-market') }}"
+           class="block px-3 py-2 rounded font-medium {{ request()->routeIs('weather-market') ? 'bg-white text-green-700' : 'text-green-100 hover:text-white hover:bg-green-700' }}">
+           Weather & Market Data
+        </a>
+        <a href="{{ route('sms_campaigns.index') }}"
+           class="block px-3 py-2 rounded font-medium {{ request()->routeIs('sms_campaigns.*') ? 'bg-white text-green-700' : 'text-green-100 hover:text-white hover:bg-green-700' }}">
+           SMS Campaigns
+        </a>
+        <a href="{{ route('sms.logs') }}"
+           class="block px-3 py-2 rounded font-medium {{ request()->routeIs('sms.logs') ? 'bg-white text-green-700' : 'text-green-100 hover:text-white hover:bg-green-700' }}">
+           SMS Logs
+        </a>
+        <a href="{{ route('analytics') }}"
+           class="block px-3 py-2 rounded font-medium {{ request()->routeIs('analytics') ? 'bg-white text-green-700' : 'text-green-100 hover:text-white hover:bg-green-700' }}">
+           Analytics
+        </a>
+    </nav>
+    <div class="mt-10 text-sm text-white">⚙️ Settings</div>
+</aside>
 
-        <!-- Main Content -->
+
+        <!-- Main Dashboard -->
         <main class="flex-1 p-8">
-            <!-- Page Header -->
-            <div class="mb-6">
-                <h1 class="text-2xl font-semibold">Dashboard</h1>
-                <p class="text-sm text-gray-500">Welcome back, Agricultural Officer</p>
+            <h1 class="text-2xl font-semibold mb-1">Dashboard</h1>
+            <p class="text-sm text-gray-500 mb-6">Welcome back, Agricultural Officer</p>
+
+            <!-- Weather Notifications -->
+            @foreach ($notifications as $note)
+                <div class="mb-4 bg-yellow-100 border-l-4 border-yellow-500 p-4 rounded">
+                    {{ $note['message'] }} <span class="text-sm text-gray-500">({{ $note['time'] }})</span>
+                </div>
+            @endforeach
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white p-5 rounded shadow">
+                    <p class="text-sm text-gray-500">Active Farmers</p>
+                    <h2 class="text-2xl font-bold">{{ $activeFarmers }}</h2>
+                </div>
+                <div class="bg-white p-5 rounded shadow">
+                    <p class="text-sm text-gray-500">SMS Sent Today</p>
+                    <h2 class="text-2xl font-bold">{{ $smsSentToday }}</h2>
+                </div>
+                <div class="bg-white p-5 rounded shadow">
+                    <p class="text-sm text-gray-500">Published Content</p>
+                    <h2 class="text-2xl font-bold">{{ $publishedContent }}</h2>
+                </div>
+                <div class="bg-white p-5 rounded shadow">
+                    <p class="text-sm text-gray-500">Delivery Rate</p>
+                    <h2 class="text-2xl font-bold">{{ number_format($deliveryRate, 1) }}%</h2>
+                </div>
             </div>
-
-  {{-- WEATHER NOTIFICATIONS --}}
-    @foreach ($notifications as $note)
-        <div class="mb-4 bg-yellow-100 border-l-4 border-yellow-500 p-4 rounded">
-            {{ $note }}
-        </div>
-    @endforeach
-
-           <!-- Stat Cards -->
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-    <div class="bg-white p-5 rounded shadow-sm border">
-        <p class="text-sm text-gray-500">Active Farmers</p>
-        <h2 class="text-2xl font-bold">{{ $activeFarmers }}</h2>
-        <p class="text-green-600 text-sm mt-1">+12% from last month</p>
-    </div>
-    <div class="bg-white p-5 rounded shadow-sm border">
-        <p class="text-sm text-gray-500">SMS Sent Today</p>
-        <h2 class="text-2xl font-bold">{{ $smsSentToday }}</h2>
-        <p class="text-green-600 text-sm mt-1">+5% from last month</p>
-    </div>
-    <div class="bg-white p-5 rounded shadow-sm border">
-        <p class="text-sm text-gray-500">Published Content</p>
-        <h2 class="text-2xl font-bold">{{ $publishedContent }}</h2>
-        <p class="text-green-600 text-sm mt-1">+8% from last month</p>
-    </div>
-    <div class="bg-white p-5 rounded shadow-sm border">
-        <p class="text-sm text-gray-500">Delivery Rate</p>
-        <h2 class="text-2xl font-bold">{{ $deliveryRate }}%</h2>
-        <p class="text-green-600 text-sm mt-1">+3% from last month</p>
-    </div>
-</div>
-
             <!-- Recent Activity and Quick Actions -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-6">
                 <!-- Recent Activity (2/3 of the row) -->

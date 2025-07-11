@@ -1,24 +1,44 @@
 <x-app-layout>
   <div class="flex min-h-screen bg-gray-100">
     <!-- Sidebar -->
-    <aside class="w-64 bg-green-600 text-white shadow-sm p-6">
-            <div class="mb-6">
-                <h1 class="text-2xl font-bold">Kilimo Sawa</h1>
-                <p class="text-sm">Admin Panel</p>
-            </div>
-            <nav class="space-y-2 text-sm">
-                <a href="{{ route('dashboard') }}" class="flex items-center px-3 py-2 bg-white text-green-700 rounded font-medium">
-                    Dashboard
-                </a>
-                <a href="{{ route('content.index') }}" class="block px-3 py-2 text-green-100 hover:text-white hover:bg-green-700 rounded">Content Management</a>
-                <a href="{{ route('farmer.index') }}" class="block px-3 py-2 text-green-100 hover:text-white hover:bg-green-700 rounded">Farmer Management</a>
-                <a href="{{ route('weather-market') }}" class="block px-3 py-2 text-green-100 hover:text-white hover:bg-green-700 rounded">Weather & Market Data</a>
-                <a href="{{ route('sms_campaigns.index') }}" class="block px-3 py-2 text-green-100 hover:text-white hover:bg-green-700 rounded">SMS Campaings</a>
-                <a href="{{ route('sms.logs') }}"class="block px-3 py-2 text-green-100 hover:text-white hover:bg-green-700 rounded">SMS Logs</a>
-                <a href="{{ route('analytics') }}" class="block px-3 py-2 text-green-100 hover:text-white hover:bg-green-700 rounded">Analytics</a>
-            </nav>
-            <div class="mt-10 text-sm text-white">⚙️ Settings</div>
-        </aside>
+   <aside class="w-64 bg-green-600 text-white shadow-sm p-6">
+    <div class="mb-6">
+        <h1 class="text-2xl font-bold">Admin Panel</h1>
+        <p class="text-sm"></p>
+    </div>
+    <nav class="space-y-2 text-sm">
+        <a href="{{ route('dashboard') }}"
+           class="block px-3 py-2 rounded font-medium {{ request()->routeIs('dashboard') ? 'bg-white text-green-700' : 'text-green-100 hover:text-white hover:bg-green-700' }}">
+           Dashboard
+        </a>
+        <a href="{{ route('content.index') }}"
+           class="block px-3 py-2 rounded font-medium {{ request()->routeIs('content.*') ? 'bg-white text-green-700' : 'text-green-100 hover:text-white hover:bg-green-700' }}">
+           Content Management
+        </a>
+        <a href="{{ route('farmer.index') }}"
+           class="block px-3 py-2 rounded font-medium {{ request()->routeIs('farmer.*') ? 'bg-white text-green-700' : 'text-green-100 hover:text-white hover:bg-green-700' }}">
+           Farmer Management
+        </a>
+        <a href="{{ route('weather-market') }}"
+           class="block px-3 py-2 rounded font-medium {{ request()->routeIs('weather-market') ? 'bg-white text-green-700' : 'text-green-100 hover:text-white hover:bg-green-700' }}">
+           Weather & Market Data
+        </a>
+        <a href="{{ route('sms_campaigns.index') }}"
+           class="block px-3 py-2 rounded font-medium {{ request()->routeIs('sms_campaigns.*') ? 'bg-white text-green-700' : 'text-green-100 hover:text-white hover:bg-green-700' }}">
+           SMS Campaigns
+        </a>
+        <a href="{{ route('sms.logs') }}"
+           class="block px-3 py-2 rounded font-medium {{ request()->routeIs('sms.logs') ? 'bg-white text-green-700' : 'text-green-100 hover:text-white hover:bg-green-700' }}">
+           SMS Logs
+        </a>
+        <a href="{{ route('analytics') }}"
+           class="block px-3 py-2 rounded font-medium {{ request()->routeIs('analytics') ? 'bg-white text-green-700' : 'text-green-100 hover:text-white hover:bg-green-700' }}">
+           Analytics
+        </a>
+    </nav>
+    <div class="mt-10 text-sm text-white">⚙️ Settings</div>
+</aside>
+
 
     <!-- Main Content -->
     <main class="flex-1 max-w-4xl mx-auto py-10 px-8 bg-white rounded-xl shadow-md m-6">
@@ -40,9 +60,9 @@
             <x-input-label for="category" value="Category" />
             <select id="category" name="category" class=" h-10 mt-3 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
               <option value="">Select category</option>
-              <option value="weather">🌦 Weather Alert</option>
-              <option value="pest">🐛 Pest Control</option>
-              <option value="advice">🌾 Farming Advice</option>
+              <option value="weather"> Weather Alert</option>
+              <option value="pest"> Pest Control</option>
+              <option value="advice"> Farming Advice</option>
             </select>
           </div>
         </div>
@@ -74,7 +94,7 @@
         <!-- Regions & Crops -->
         <div class="grid sm:grid-cols-2 gap-8">
           <div>
-            <x-input-label value="📍 Target Regions (optional)" />
+            <x-input-label value=" Target Regions (optional)" />
             <div
               class="mt-3 max-h-44 overflow-y-auto rounded-lg border border-gray-300 bg-gray-50 p-4 shadow-inner scrollbar-thin scrollbar-thumb-indigo-300 scrollbar-track-indigo-100">
               @foreach ($regions as $region)
@@ -87,7 +107,7 @@
           </div>
 
           <div>
-            <x-input-label value="🌱 Crops (optional)" />
+            <x-input-label value=" Crops (optional)" />
             <div
               class="mt-3 max-h-44 overflow-y-auto rounded-lg border border-gray-300 bg-gray-50 p-4 shadow-inner scrollbar-thin scrollbar-thumb-green-300 scrollbar-track-green-100">
               @foreach ($crops as $crop)
@@ -104,7 +124,7 @@
        <div>
   <button type="submit"
     class="inline-flex items-center gap-2 px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow transition">
-    💾 Save Template
+    Save Template
   </button>
 </div>
       </form>
