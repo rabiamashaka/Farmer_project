@@ -35,4 +35,13 @@ return [
         ],
     ],
 
+   'openweather' => [
+    'key'     => env('OPENWEATHER_KEY'),
+    'url'     => env('OPENWEATHER_URL', 'https://api.openweathermap.org/data/3.0/onecall'),
+    'units'   => env('OPENWEATHER_UNITS', 'metric'),
+    'exclude' => env('OPENWEATHER_EXCLUDE', 'minutely,hourly,daily,alerts'),
+],
+
+
+
 ];

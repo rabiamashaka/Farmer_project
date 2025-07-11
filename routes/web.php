@@ -1,42 +1,65 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\weatherMarketController;
-use App\Http\Controllers\ContentController;
-use App\Http\Controllers\FarmerController;
+use App\Http\Controllers\{
+    DashboardController,
+    ProfileController,
+    WeatherMarketController,
+    ContentController,
+    FarmerController,
+    Sms_logs,   // ← controller ya sms_logs (tazama faili #3)
+    Analytics,
+    SmsCampaignsController
+};
 
-Route::get('/', function () {
-    return view('welcome');
-});
+/* ----------  PUBLIC ---------- */
+Route::view('/', 'welcome')->name('welcome');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
+/* ----------  LARAVEL AUTH (Breeze/Fortify) ---------- */
 require __DIR__.'/auth.php';
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+/* ----------  ALL LOGGED‑IN USERS ---------- */
+Route::middleware('auth')->group(function () {
 
-    Route::get('/content', [ContentController::class, 'index'])->name('content.index');
-    
+    /* ----- Admin‑only ----- */
+    Route::middleware('role:admin')->group(function () {
 
-    Route::get('/farmer', [FarmerController::class, 'index'])->name('farmer.index');
+        // DASHBOARD – inatumia controller sasa
+        Route::get('/dashboard', [DashboardController::class, 'index'])
+             ->name('dashboard');
+
+        Route::resource('content', ContentController::class);
+        Route::resource('farmer',  FarmerController::class);
+        Route::resource('sms_campaigns', SmsCampaignsController::class);
+
+        Route::post('/sms_campaigns/quick-sms',
+                    [SmsCampaignsController::class, 'sendQuickSms'])
+             ->name('sms_campaigns.quickSms');
+
+        Route::get('/analytics', [Analytics::class, 'analytics'])
+             ->name('analytics');
+    });
+
+    /* ----- Farmer/user‑only ----- */
+    Route::middleware('role:user')->group(function () {
+        Route::view('/userdashboard', 'userdashboard')->name('userdashboard');
+        // add other farmer‑specific routes here…
+    });
+
+    /* ----- Shared by both roles ----- */
+    Route::controller(WeatherMarketController::class)->group(function () {
+        Route::get ('/weather-market', 'index')->name('weather-market');
+        Route::post('/weather/refresh', 'refresh')->name('weather.refresh');
+    });
+
+    // SMS log viewer (hiari)
+    Route::get('/sms-log', [Sms_logs::class, 'index'])
+         ->name('sms.logs');
+
+    /* ----- Profile management ----- */
+    Route::controller(ProfileController::class)->group(function () {
+        Route::get   ('/profile', 'edit')->name('profile.edit');
+        Route::patch ('/profile', 'update')->name('profile.update');
+        Route::delete('/profile', 'destroy')->name('profile.destroy');
+    });
 });
-Route::resource('content', \App\Http\Controllers\ContentController::class);
-Route::resource('farmer', App\Http\Controllers\FarmerController::class);
-
-
-
-    Route::get('/weather-market', [WeatherMarketController::class, 'show'])
-    ->middleware(['auth'])
-    ->name('weather-market');

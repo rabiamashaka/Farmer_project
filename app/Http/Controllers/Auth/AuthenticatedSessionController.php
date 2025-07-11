@@ -12,7 +12,7 @@ use Illuminate\View\View;
 class AuthenticatedSessionController extends Controller
 {
     /**
-     * Display the login view.
+     * Show the login form.
      */
     public function create(): View
     {
@@ -20,28 +20,41 @@ class AuthenticatedSessionController extends Controller
     }
 
     /**
-     * Handle an incoming authentication request.
+     * Handle the incoming authentication request and
+     * perform a role‑based redirect in Breeze/Fortify style.
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+        // Validate credentials
         $request->authenticate();
 
+        // Prevent session fixation
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        $user = $request->user();   // or auth()->user()
+
+        // Role‑aware destination
+        $target = match ($user->role) {
+            'admin' => route('dashboard'),
+            'user'  => route('userdashboard'),
+            default => route('welcome'),   // fallback for any other role
+        };
+
+        // If the user was trying to visit a protected page, honour it;
+        // otherwise send them to the role‑specific dashboard.
+        return redirect()->intended($target);
     }
 
     /**
-     * Destroy an authenticated session.
+     * Log the user out and invalidate the session.
      */
     public function destroy(Request $request): RedirectResponse
     {
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect()->route('welcome');
     }
 }

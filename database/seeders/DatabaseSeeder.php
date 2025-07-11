@@ -19,5 +19,16 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        // Piga seeder ya mikoa
+        $this->call([
+            RegionSeeder::class,
+            // Seeder nyingine kama ipo
+        ]);
+
+              $this->call(ContentTemplateSeeder::class);
+
+              $this->call(CropSeeder::class);
+
     }
 }
