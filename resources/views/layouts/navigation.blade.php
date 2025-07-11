@@ -4,7 +4,12 @@
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
-                
+                 <a href="/" class="flex items-center space-x-2 text-primary-600 font-extrabold text-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                    <path d="M2.25 12l8.954-9a.75.75 0 011.092 0l8.954 9a2.25 2.25 0 01.75 1.692v6.558A2.25 2.25 0 0119.75 22.5H4.25A2.25 2.25 0 012 20.25v-6.558A2.25 2.25 0 012.25 12z" />
+                </svg>
+                <span>AgriTech</span>
+            </a>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">

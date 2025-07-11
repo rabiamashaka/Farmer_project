@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use App\Services\AfricasTalkingService;
 use App\Jobs\SendSmsJob;
 use App\Models\Crop;
+ use Stichoza\GoogleTranslate\GoogleTranslate;
+
 
 class SmsCampaignsController extends Controller
 {
@@ -29,67 +31,68 @@ class SmsCampaignsController extends Controller
         ));
     }
 
-    /*------------------------------------------------------------------
-    | STORE / SEND CAMPAIGN
-    *-----------------------------------------------------------------*/
-    public function store(Request $request, AfricasTalkingService $sms)
-    {
-        $data = $request->validate([
-            'title'     => 'required|string|max:255',
-            'message'   => 'required|string|max:160',
-            'locations' => 'array|nullable',
-            'locations.*'=> 'string',
-            'crops'     => 'array|nullable',
-            'crops.*'   => 'string',
-            'language'  => 'required|string|in:sw,en',
-        ]);
+ 
 
-        // 1️⃣ Hifadhi campaign – tunategemea casts ('array') kwenye model
-        $campaign = SmsCampaign::create([
-            'title'     => $data['title'],
-            'message'   => $data['message'],
-            'locations' => $data['locations'] ?? [],
-            'crops'     => $data['crops']     ?? [],
-            'language'  => $data['language'],
-            'status'    => 'queued',
-        ]);
+public function store(Request $request, AfricasTalkingService $sms)
+{
+    $data = $request->validate([
+        'title'     => 'required|string|max:255',
+        'message'   => 'required|string|max:160',
+        'locations' => 'array|nullable',
+        'locations.*'=> 'string',
+        'crops'     => 'array|nullable',
+        'crops.*'   => 'string',
+        'language'  => 'required|string|in:sw,en',
+    ]);
 
-        // 2️⃣ Tafuta wakulima wanaolingana (query inajirekebisha kulingana na filters)
-        $farmerQuery = Farmer::query();
+    // 1️⃣ Translate message once before sending
+    $translatedMessage = $data['language'] === 'sw'
+        ? GoogleTranslate::trans($data['message'], 'sw')
+        : $data['message'];
 
-        if (!empty($data['locations'])) {
-            $farmerQuery->whereIn('location', $data['locations']);
-        }
-        if (!empty($data['crops'])) {
-    $farmerQuery->whereHas('crops', function ($q) use ($data) {
-       $q->whereIn('name', $data['crops']);
-  });
+    $campaign = SmsCampaign::create([
+    'title'     => $data['title'],
+    'message'   => $translatedMessage,
+    'locations' => $data['locations'] ?? null, 
+    'crops'     => $data['crops'] ?? null,     
+    'language'  => $data['language'],
+    'status'    => 'queued',
+]);
 
-}
 
-        $farmerQuery->where('language', $data['language']);
+    $farmerQuery = Farmer::query();
 
-        // 3️⃣ Tuma SMS kwa chunks kupitia job queue
-        $sentCount = 0;
-        $farmerQuery->chunkById(200, function ($farmers) use (&$sentCount, $campaign) {
-            foreach ($farmers as $farmer) {
-                SendSmsJob::dispatch($farmer->phone, $campaign->message, $campaign->id);
-                $sentCount++;
-            }
-        });
-
-        // 4️⃣ Rekebisha status & takwimu
-        $campaign->update([
-            'status'   => 'sent',
-            'sent_to'  => $sentCount,
-        ]);
-
-        return back()->with('success', "Campaign created and queued for {$sentCount} farmers!");
+    if (!empty($data['locations'])) {
+        $farmerQuery->whereIn('location', $data['locations']);
     }
 
-    /*------------------------------------------------------------------
-    | QUICK SMS (single number)
-    *-----------------------------------------------------------------*/
+    if (!empty($data['crops'])) {
+        $farmerQuery->whereHas('crops', function ($q) use ($data) {
+            $q->whereIn('name', $data['crops']);
+        });
+    }
+
+    
+   $sentCount = 0;
+$farmerQuery->chunkById(200, function ($farmers) use (&$sentCount, $campaign) {
+    foreach ($farmers as $farmer) {
+        SendSmsJob::dispatch($farmer->phone, $campaign->message, $campaign->id);
+        $sentCount++;
+    }
+});
+
+
+    
+    $campaign->update([
+        'status'   => 'sent',
+        'sent_to'  => $sentCount,
+    ]);
+
+    return back()->with('success', "Campaign created and queued for {$sentCount} farmers!");
+}
+
+
+  
     public function sendQuickSms(Request $request, AfricasTalkingService $sms)
     {
         $request->validate([
@@ -103,4 +106,23 @@ class SmsCampaignsController extends Controller
             ? back()->with('success', 'Quick SMS sent successfully!')
             : back()->with('error', 'Failed to send SMS. Check logs.');
     }
+
+    public function translate(Request $request)
+{
+    $request->validate([
+        'text' => 'required|string|max:160',
+        'lang' => 'required|in:sw,en',
+    ]);
+
+    try {
+        $translated = $request->lang === 'sw'
+            ? GoogleTranslate::trans($request->text, 'sw')
+            : $request->text;
+
+        return response()->json(['translated' => $translated]);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Translation failed'], 500);
+    }
+}
+
 }

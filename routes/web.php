@@ -31,6 +31,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('content', ContentController::class);
         Route::resource('farmer',  FarmerController::class);
         Route::resource('sms_campaigns', SmsCampaignsController::class);
+Route::post('/translate', [SmsCampaignsController::class, 'translate'])->name('translate.message');
 
         Route::post('/sms_campaigns/quick-sms',
                     [SmsCampaignsController::class, 'sendQuickSms'])

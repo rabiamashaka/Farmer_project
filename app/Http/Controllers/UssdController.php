@@ -1,22 +1,5 @@
 <?php
-/**
- * Dynamic USSD registration where the user **types** Region and Crops instead of
- * selecting from a list.  Region and Crop names are validated against the
- * database; if a match is not found the user is informed.
- *
- * Files in this snippet:
- * ├── app/Http/Controllers/UssdController.php   (updated free‑text flow)
- * ├── app/Models/Farmer.php                     (many‑to‑many relationship)
- * ├── app/Models/Crop.php                      (unchanged)
- * └── database/migrations/xxxx_xx_xx_create_crop_farmer_table.php (pivot)
- *
- * NOTE: Remember to run `php artisan migrate` for the pivot and to make sure
- *       there is NO `crops` column in `farmers` table anymore.
- *
- * ───────────────────────────────────────────────────────────────────────────────
- *  FILE: app/Http/Controllers/UssdController.php
- * ───────────────────────────────────────────────────────────────────────────────
- */
+
 
 namespace App\Http\Controllers;
 
@@ -30,16 +13,14 @@ use App\Traits\SmsTrait;
 
 class UssdController extends Controller
 {
-    use UssdMenuTrait; // cont(), servicesMenu(), etc.
-    use SmsTrait;      // sendText()
+    use UssdMenuTrait; 
+    use SmsTrait;      
 
-    /* ─────────── ENTRY POINT ─────────── */
     public function handler(Request $request)
     {
         $phone = $request->input('phoneNumber');
         $text  = trim($request->input('text', ''));
 
-        // Farmer already exists → go straight to services menu
         if (Farmer::where('phone', $phone)->exists()) {
             return $this->handleReturnUser($text, $phone);
         }
@@ -149,13 +130,11 @@ class UssdController extends Controller
             return $this->end('Chaguo la farming type si sahihi.');
         }
 
-        /* ─────────── Validate Crops Names ─────────── */
         $inputCropNames = array_filter(array_map('trim', explode(',', $cropNamesCsv)));
         if (empty($inputCropNames)) {
             return $this->end('Tafadhali taja angalau zao moja.');
         }
 
-        // Fetch crops whose names match (case‑insensitive)
         $cropModels = Crop::whereIn('name', $inputCropNames)->get();
         $foundNames = $cropModels->pluck('name')->map(fn($n) => strtolower($n))->toArray();
         $missing    = array_diff(array_map('strtolower', $inputCropNames), $foundNames);
@@ -198,7 +177,6 @@ class UssdController extends Controller
         return $this->plain("CON $txt");
     }
 
-    /* ─────────── afterSms HELPER ─────────── */
     private function afterSms(string $msg, string $phone, string $ussdEnd)
     {
         $this->sendText($msg, $phone);

@@ -9,7 +9,7 @@
         <!-- Sidebar -->
         <aside class="w-64 bg-green-600 text-white shadow-sm p-6">
             <div class="mb-6">
-                <h1 class="text-2xl font-bold">Kilimo Sawa</h1>
+                <h1 class="text-2xl font-bold">Admin Panel</h1>
                 <p class="text-sm">Admin Panel</p>
             </div>
             <nav class="space-y-2 text-sm">

@@ -1,47 +1,24 @@
 <x-app-layout>
   <div class="flex min-h-screen bg-gray-100">
     <!-- Sidebar -->
-    <aside class="w-64 bg-green-600 text-white shadow-md p-6 flex flex-col">
-      <div class="mb-8">
-        <h1 class="text-3xl font-extrabold tracking-tight mb-1">Kilimo Sawa</h1>
-        <p class="text-sm font-semibold uppercase tracking-wide text-green-200">Admin Panel</p>
-      </div>
-
-      <nav class="flex-1 space-y-3 text-sm font-medium">
-        <a href="{{ route('dashboard') }}"
-          class="flex items-center px-4 py-3 rounded bg-white text-green-700 font-semibold shadow hover:bg-green-100 transition">
-          Dashboard
-        </a>
-        <a href="{{ route('content.index') }}"
-          class="block px-4 py-3 rounded hover:bg-green-600 hover:text-white transition">
-          Content Management
-        </a>
-        <a href="{{ route('farmer.index') }}"
-          class="block px-4 py-3 rounded hover:bg-green-600 hover:text-white transition">
-          Farmer Management
-        </a>
-        <a href="{{ route('weather-market') }}"
-          class="block px-4 py-3 rounded hover:bg-green-600 hover:text-white transition">
-          Weather & Market Data
-        </a>
-        <a href="{{ route('sms_campaigns.index') }}"
-          class="block px-4 py-3 rounded hover:bg-green-600 hover:text-white transition">
-          SMS Campaigns
-        </a>
-        <a href="{{ route('sms.logs') }}"
-          class="block px-4 py-3 rounded hover:bg-green-600 hover:text-white transition">
-          SMS Logs
-        </a>
-        <a href="{{ route('analytics') }}"
-          class="block px-4 py-3 rounded hover:bg-green-600 hover:text-white transition">
-          Analytics
-        </a>
-      </nav>
-
-      <div class="mt-8 pt-4 border-t border-green-600 text-green-300 text-sm font-medium uppercase tracking-wide">
-        ⚙️ Settings
-      </div>
-    </aside>
+    <aside class="w-64 bg-green-600 text-white shadow-sm p-6">
+            <div class="mb-6">
+                <h1 class="text-2xl font-bold">Kilimo Sawa</h1>
+                <p class="text-sm">Admin Panel</p>
+            </div>
+            <nav class="space-y-2 text-sm">
+                <a href="{{ route('dashboard') }}" class="flex items-center px-3 py-2 bg-white text-green-700 rounded font-medium">
+                    Dashboard
+                </a>
+                <a href="{{ route('content.index') }}" class="block px-3 py-2 text-green-100 hover:text-white hover:bg-green-700 rounded">Content Management</a>
+                <a href="{{ route('farmer.index') }}" class="block px-3 py-2 text-green-100 hover:text-white hover:bg-green-700 rounded">Farmer Management</a>
+                <a href="{{ route('weather-market') }}" class="block px-3 py-2 text-green-100 hover:text-white hover:bg-green-700 rounded">Weather & Market Data</a>
+                <a href="{{ route('sms_campaigns.index') }}" class="block px-3 py-2 text-green-100 hover:text-white hover:bg-green-700 rounded">SMS Campaings</a>
+                <a href="{{ route('sms.logs') }}"class="block px-3 py-2 text-green-100 hover:text-white hover:bg-green-700 rounded">SMS Logs</a>
+                <a href="{{ route('analytics') }}" class="block px-3 py-2 text-green-100 hover:text-white hover:bg-green-700 rounded">Analytics</a>
+            </nav>
+            <div class="mt-10 text-sm text-white">⚙️ Settings</div>
+        </aside>
 
     <!-- Main Content -->
     <main class="flex-1 max-w-4xl mx-auto py-10 px-8 bg-white rounded-xl shadow-md m-6">

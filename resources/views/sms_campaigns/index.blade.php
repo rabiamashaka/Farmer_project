@@ -53,9 +53,9 @@
                 </div>
             </div>
 
-            <!-- Flex Layout: Table + USSD -->
+          
             <div class="flex gap-6 flex-wrap lg:flex-nowrap mb-6">
-                <!-- SMS Campaign Table -->
+                
                 <div class="flex-1 bg-white p-4 rounded shadow">
                     <h2 class="text-lg font-semibold mb-2">SMS Campaigns</h2>
                     <p class="text-sm text-gray-600 mb-4">Manage your SMS campaigns and track their performance</p>
@@ -79,7 +79,7 @@
                     </table>
                 </div>
 
-                <!-- USSD Registration Info -->
+                
                 <div class="w-full lg:w-1/3 bg-white p-4 rounded shadow">
                     <h3 class="font-semibold text-lg mb-2">USSD Farmer Registration</h3>
                     <p class="text-sm mb-2 text-gray-700">Farmers can register using USSD codes from any mobile phone</p>
@@ -321,9 +321,39 @@
                 .forEach(cb => cb.checked   = cropSet.has(cb.value));
         }
 
-        // Example translateMessage (dummy)
-        function translateMessage() {
-            alert('Call your translation endpoint here…');
+       
+function translateMessage() {
+    const messageEl = document.getElementById('message');
+    const language = document.getElementById('language').value;
+    const message = messageEl.value;
+
+    if (!message.trim()) {
+        alert('Please enter a message to translate.');
+        return;
+    }
+
+    fetch("{{ route('translate.message') }}", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+        },
+        body: JSON.stringify({ text: message, lang: language })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.translated) {
+            messageEl.value = data.translated;
+            updateCount(messageEl);
+        } else {
+            alert('Translation failed.');
         }
+    })
+    .catch(() => {
+        alert('An error occurred while translating.');
+    });
+}
+
+
     </script>
 </x-app-layout>

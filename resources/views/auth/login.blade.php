@@ -52,6 +52,15 @@
                     Register here
                 </a>
             </div>
-        
+        <!-- Password -->
+
+
+<!-- Forgot Password -->
+<div class="text-right">
+    <a href="{{ route('password.request') }}" class="text-sm text-green-600 hover:text-green-800 underline">
+        Forgot your password?
+    </a>
+</div>
+
    
 </x-guest-layout>

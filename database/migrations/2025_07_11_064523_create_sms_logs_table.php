@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // database/migrations/xxxx_xx_xx_create_sms_logs_table.php
-Schema::create('sms_logs', function (Blueprint $table) {
+       Schema::create('sms_logs', function (Blueprint $table) {
     $table->id();
+    $table->unsignedBigInteger('campaign_id')->nullable();
     $table->string('phone');
     $table->text('message');
-    $table->string('status')->default('pending'); // sent, delivered, failed
+    $table->enum('direction', ['incoming', 'outgoing'])->default('outgoing');
+    $table->string('status')->nullable(); // Sent, Failed, Delivered, etc.
     $table->timestamp('sent_at')->nullable();
     $table->timestamps();
 });
