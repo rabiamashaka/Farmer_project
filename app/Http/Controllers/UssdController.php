@@ -1,23 +1,4 @@
 <?php
-/**
- * Dynamic USSD registration where the user **types** Region and Crops instead of
- * selecting from a list.  Region and Crop names are validated against the
- * database; if a match is not found the user is informed.
- *
- * Files in this snippet:
- * ├── app/Http/Controllers/UssdController.php   (updated free‑text flow)
- * ├── app/Models/Farmer.php                     (many‑to‑many relationship)
- * ├── app/Models/Crop.php                      (unchanged)
- * └── database/migrations/xxxx_xx_xx_create_crop_farmer_table.php (pivot)
- *
- * NOTE: Remember to run `php artisan migrate` for the pivot and to make sure
- *       there is NO `crops` column in `farmers` table anymore.
- *
- * ───────────────────────────────────────────────────────────────────────────────
- *  FILE: app/Http/Controllers/UssdController.php
- * ───────────────────────────────────────────────────────────────────────────────
- */
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
