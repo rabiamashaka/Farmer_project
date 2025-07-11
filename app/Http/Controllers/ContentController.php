@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ContentTemplate;
 use App\Models\Crop;
-use App\Models\Region;      // ✅ ongeza
+use App\Models\Region;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 

@@ -99,7 +99,7 @@
 <main class="ml-64 pt-24 p-6 space-y-8">
   <!-- ▸ Welcome banner ---------------------------------------- -->
    <div>
-      <h2> WelcomeJohn Mkulima</h2>
+      <h2> Welcome John Mkulima</h2>
       <p class="text-sm text-gray-500 mt-1">Moshi • Maize, Beans, Coffee</p>
     </div>
     <!-- Room for future quick‑action buttons -->
