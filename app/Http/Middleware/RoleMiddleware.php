@@ -11,8 +11,7 @@ class RoleMiddleware
     {
         // Block if not logged in OR wrong role
         if (! $request->user() || $request->user()->role !== $role) {
-            // 👉 change to redirect()->route('welcome') if you’d rather send them elsewhere
-            abort(403);
+            redirect()->route('welcome');
         }
         return $next($request);
     }
