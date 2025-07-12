@@ -96,18 +96,20 @@
                     </div>
 
                    <!-- Crops Grown -->
-<div class="mb-4">
-    <x-input-label for="crops">Crops Grown</x-input-label>
-    <div class="flex flex-wrap gap-4">
-        @foreach($crops as $id => $crop)
-            <label class="flex items-center space-x-2 text-sm text-gray-700">
-                <input type="checkbox" name="crops[]" value="{{ $id }}" class="rounded text-green-600">
-                <span>{{ $crop }}</span>
-            </label>
-        @endforeach
-    </div>
-    <x-input-error :messages="$errors->get('crops')" class="mt-2" />
-</div>
+{{-- CROPS --}}
+                        <div>
+                            <label class="block mb-1 font-semibold text-gray-700">Target Crop Types</label>
+                            <div
+                                class="grid grid-cols-3 gap-3 max-h-40 overflow-y-auto border border-gray-200 rounded p-2">
+                                @foreach ($crops as $crop)
+                                    <label class="inline-flex items-center space-x-2">
+                                        <input type="checkbox" name="crops[]" value="{{ $crop }}"
+                                               class="form-checkbox text-indigo-600 crop-checkbox">
+                                        <span>{{ ucfirst($crop) }}</span>
+                                    </label>
+                                @endforeach
+                            </div>
+                        </div>
 
  
                     <!-- Buttons -->

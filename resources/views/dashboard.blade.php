@@ -86,24 +86,37 @@
                 </div>
 
                 <!-- Quick Actions (1/3 of the row) -->
-                <div class="space-y-4">
-                    <div class="bg-white p-4 rounded shadow border-l-4 border-green-500">
-                        <h4 class="font-bold">Create Content</h4>
-                        <p class="text-sm text-gray-500">Add new agricultural content</p>
-                    </div>
-                    <div class="bg-white p-4 rounded shadow border-l-4 border-blue-500">
-                        <h4 class="font-bold">Send SMS</h4>
-                        <p class="text-sm text-gray-500">Send alert to farmers</p>
-                    </div>
-                    <div class="bg-white p-4 rounded shadow border-l-4 border-purple-500">
-                        <h4 class="font-bold">Add Farmer</h4>
-                        <p class="text-sm text-gray-500">Register new farmer</p>
-                    </div>
-                    <div class="bg-white p-4 rounded shadow border-l-4 border-orange-500">
-                        <h4 class="font-bold">Fetch Data</h4>
-                        <p class="text-sm text-gray-500">Update weather & market info</p>
-                    </div>
-                </div>
+       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+    <a href="{{ route('content.create') }}">
+        <div class="bg-white p-4 rounded shadow border-l-4 border-green-500 hover:bg-green-50 transition">
+            <h4 class="font-bold">Create Content</h4>
+            <p class="text-sm text-gray-500">Add new agricultural content</p>
+        </div>
+    </a>
+
+    <a href="">
+        <div class="bg-white p-4 rounded shadow border-l-4 border-blue-500 hover:bg-blue-50 transition">
+            <h4 class="font-bold">Send SMS</h4>
+            <p class="text-sm text-gray-500">Send alert to farmers</p>
+        </div>
+    </a>
+
+    <a href="{{ route('farmer.create') }}">
+        <div class="bg-white p-4 rounded shadow border-l-4 border-purple-500 hover:bg-purple-50 transition">
+            <h4 class="font-bold">Add Farmer</h4>
+            <p class="text-sm text-gray-500">Register new farmer</p>
+        </div>
+    </a>
+
+    <a href="">
+        <div class="bg-white p-4 rounded shadow border-l-4 border-orange-500 hover:bg-orange-50 transition">
+            <h4 class="font-bold">Fetch Data</h4>
+            <p class="text-sm text-gray-500">Update weather & market info</p>
+        </div>
+    </a>
+</div>
+
+
             </div>
         </main>
     </div>

@@ -25,20 +25,20 @@ class WeatherChanged implements ShouldBroadcast
         public WeatherReading $reading
     ) {}
 
-    /** Channel ya broadcast (private) */
-    public function broadcastOn(): Channel   // ← tumia Channel ili kuruhusu aina zote
+  
+    public function broadcastOn(): Channel  
     {
-        // Mfano: private-weather.5  (5 = id ya mkoa)
+       
         return new PrivateChannel('weather.' . $this->region->id);
     }
 
-    /** Jina la event upande wa klijenti (optional) */
+ 
     public function broadcastAs(): string
     {
         return 'weather.changed';
     }
 
-    /** Data itakayotumwa kwa websocket */
+
     public function broadcastWith(): array
     {
         return [
@@ -47,9 +47,9 @@ class WeatherChanged implements ShouldBroadcast
             'reading' => [
                 'temperature' => $this->reading->temperature,
                 'humidity'    => $this->reading->humidity,
-                'wind'        => $this->reading->wind,       // hakikisha kolamu ipo
+                'wind'        => $this->reading->wind,       
                 'rain'        => $this->reading->rain,
-                // Tumia toIso8601String() badala ya toIsoString()
+                
                 'measured_at' => $this->reading->measured_at->toIso8601String(),
             ],
         ];
