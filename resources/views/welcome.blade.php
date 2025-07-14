@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>AgriSMS | Smart Farming Through SMS</title>
 
     <!-- TailwindCSS via CDN for quick prototyping. For production, install Tailwind and compile through Vite or Mix -->
@@ -30,8 +31,8 @@
             },
         }
     </script>
+@vite(['resources/css/app.css','resources/js/app.js'])
 </head>
-<body class="antialiased min-h-full flex flex-col">
 
     <!-- ========== Navbar ========== -->
     <header class="w-full bg-white/70 backdrop-blur border-b border-gray-100 shadow-sm sticky top-0 z-50">
@@ -45,8 +46,13 @@
             </a>
 
             <!-- Single Login Button -->
-            <div class="flex items-center">
-                <a href="{{ route('login') }}" class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 transition">Login</a>
+            <div class="flex items-center space-x-4">
+                <!-- Language selector -->
+                <select id="lang-switcher" class="rounded-md border-gray-300 text-sm focus:ring-primary-600 focus:border-primary-600">
+                    <option value="en">English</option>
+                    <option value="sw">Kiswahili</option>
+                </select>
+                <a href="{{ route('login') }}" data-i18n class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 transition">Login</a>
             </div>
         </div>
     </header>
@@ -56,15 +62,15 @@
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <!-- Hero -->
             <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-gray-800 mb-4">
-                Smart Farming Through <span class="text-primary-600">SMS Technology</span>
+                <span data-i18n>Smart Farming Through <span class="text-primary-600">SMS Technology</span></span>
             </h1>
             <p class="max-w-2xl mx-auto text-gray-600 text-lg mb-8">
-                Empowering Tanzanian farmers with timely agricultural information, weather updates, and market prices delivered directly to their mobile phones.
+                <span data-i18n>Empowering Tanzanian farmers with timely agricultural information, weather updates, and market prices delivered directly to their mobile phones.</span>
             </p>
 
             <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-                <a href="{{ route('register') }}" class="inline-block px-6 py-3 rounded-full text-base font-semibold text-white bg-primary-600 hover:bg-primary-700 shadow-lg shadow-primary-600/20 transition">Register</a>
-                <a href="{{ route('login') }}" class="inline-block px-6 py-3 rounded-full text-base font-semibold text-primary-600 ring-1 ring-primary-600 hover:bg-primary-50 transition">Login</a>
+                <a href="{{ route('register') }}" class="inline-block px-6 py-3 rounded-full text-base font-semibold text-white bg-primary-600 hover:bg-primary-700 shadow-lg shadow-primary-600/20 transition"><span data-i18n>Register</span></a>
+                <a href="{{ route('login') }}" data-i18n class="inline-block px-6 py-3 rounded-full text-base font-semibold text-primary-600 ring-1 ring-primary-600 hover:bg-primary-50 transition">Login</a>
             </div>
 
             <!-- ===== Feature Cards ===== -->
@@ -74,8 +80,8 @@
                     <div class="w-10 h-10 flex items-center justify-center rounded-full bg-primary-50 text-primary-600 mb-4">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8h2a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2v-8a2 2 0 012-2h2M9 6h6m-6 4h6m-6 4h6" /></svg>
                     </div>
-                    <h3 class="font-semibold text-gray-800 mb-1">SMS Notifications</h3>
-                    <p class="text-sm text-gray-500">Receive farming tips, early‑warning alerts, and announcements wherever you are.</p>
+                    <h3 class="font-semibold text-gray-800 mb-1" data-i18n>SMS Notifications</h3>
+                    <p class="text-sm text-gray-500"><span data-i18n>Receive farming tips, early-warning alerts, and announcements wherever you are.</span></p>
                 </div>
 
                 <!-- Weather Updates -->
@@ -83,8 +89,8 @@
                     <div class="w-10 h-10 flex items-center justify-center rounded-full bg-primary-50 text-primary-600 mb-4">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75V4.5m6.364 2.146l1.061-1.061M19.5 12h2.25M18.364 17.864l1.061 1.061M12 19.5v2.25M4.575 18.925l-1.061 1.061M4.5 12H2.25M5.636 6.646L4.575 5.586" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                     </div>
-                    <h3 class="font-semibold text-gray-800 mb-1">Weather Updates</h3>
-                    <p class="text-sm text-gray-500">Get timely forecasts, severe‑weather alerts, and rainfall predictions.</p>
+                    <h3 class="font-semibold text-gray-800 mb-1" data-i18n>Weather Updates</h3>
+                    <p class="text-sm text-gray-500"><span data-i18n>Get timely forecasts, severe-weather alerts, and rainfall predictions.</span></p>
                 </div>
 
                 <!-- Market Prices -->
@@ -92,8 +98,8 @@
                     <div class="w-10 h-10 flex items-center justify-center rounded-full bg-primary-50 text-primary-600 mb-4">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.593 4.593a.75.75 0 001.06 0L21.75 10.5" /></svg>
                     </div>
-                    <h3 class="font-semibold text-gray-800 mb-1">Market Prices</h3>
-                    <p class="text-sm text-gray-500">Stay updated with current market prices and sell at the right time.</p>
+                    <h3 class="font-semibold text-gray-800 mb-1" data-i18n>Market Prices</h3>
+                    <p class="text-sm text-gray-500"><span data-i18n>Stay updated with current market prices and sell at the right time.</span></p>
                 </div>
 
                 <!-- Mobile Friendly -->
@@ -101,4 +107,4 @@
                     <div class="w-10 h-10 flex items-center justify-center rounded-full bg-primary-50 text-primary-600 mb-4">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6h-7.5a.75.75 0 00-.75.75v10.5c0 .414.336.75.75.75h7.5a.75.75 0 00.75-.75V6.75a.75.75 0 00-.75-.75z" /></svg>
                     </div>
-                    <h3 class="font-semibold text-gray-800 mb-1">Mobile Friendly
+                    <h3 class="font-semibold text-gray-800 mb-1" data-i18n>Mobile Friendly

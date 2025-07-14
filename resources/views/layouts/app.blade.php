@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta name="translate-endpoint" content="{{ route('translate.message') }}">
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
@@ -25,6 +26,12 @@
             
 
             <!-- Page Content -->
+            @if(session('success'))
+                <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" class="m-4 p-3 rounded bg-green-100 text-green-700 text-sm shadow">
+                    {{ session('success') }}
+                </div>
+                @endif
+
             <main>
                 {{ $slot }}
             </main>

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\{
     DashboardController,
     ProfileController,
@@ -15,11 +16,24 @@ use App\Http\Controllers\{
 /* ----------  PUBLIC ---------- */
 Route::view('/', 'welcome')->name('welcome');
 
+// Locale switch (POST)
+Route::post('/set-locale/{lang}', function ($lang) {
+    $allowed = config('app.available_locales');
+    if (in_array($lang, $allowed)) {
+        session(['locale' => $lang]);
+    }
+    return response()->noContent();
+})->name('set-locale');
+
+// Public translate endpoint
+Route::post('/translate-text', [\App\Http\Controllers\SmsCampaignsController::class, 'translate'])->name('translate.text');
+
 /* ----------  LARAVEL AUTH (Breeze/Fortify) ---------- */
 require __DIR__.'/auth.php';
 
 /* ----------  ALL LOGGED‑IN USERS ---------- */
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth','verified'])->group(function () {
+    Route::post('/chatbot', ChatbotController::class)->name('chatbot');
 
     /* ----- Admin‑only ----- */
     Route::middleware('role:admin')->group(function () {
