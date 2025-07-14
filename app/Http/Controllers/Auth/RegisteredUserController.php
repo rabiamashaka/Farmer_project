@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\View\View;
-use Illuminate\Validation\Rules\Password;
+
 
 
 
@@ -48,6 +48,10 @@ class RegisteredUserController extends Controller
         ]);
 
         event(new Registered($user));
+
+        // Flash success message
+        session()->flash('success', __('Registration successful!'));
+
 
         auth()->login($user);   // or Auth::login($user);
 

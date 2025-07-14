@@ -24,14 +24,14 @@
                     <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
                     <input id="email" name="email" type="text" inputmode="tel"
                         class="mt-1 block w-full rounded-md border border-gray-300 bg-amber-50 focus:border-green-500 focus:ring-green-500 shadow-sm"
-                        placeholder="rabia@gmail.com" required autofocus value="{{ old('email') }}">
+                        placeholder="Enter your email" required autofocus value="{{ old('email') }}">
                     <x-input-error :messages="$errors->get('email')" class="mt-1" />
                 </div>
 
                 <!-- Password -->
                 <div>
                     <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                    <input id="password" name="password" type="password" required
+                    <input id="password" name="password" type="password" placeholder="Enter your password" required
                         class="mt-1 block w-full rounded-md border border-gray-300 bg-white focus:border-green-500 focus:ring-green-500 shadow-sm">
                     <x-input-error :messages="$errors->get('password')" class="mt-1" />
                 </div>

@@ -22,6 +22,11 @@
                 </a>
             </div>
 
+            @if(session('success'))
+                <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" class="mb-4 p-3 rounded bg-green-100 text-green-700 text-sm">
+                    {{ session('success') }}
+                </div>
+                @endif
             <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">
                 {{ $slot }}
             </div>

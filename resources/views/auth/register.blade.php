@@ -16,6 +16,8 @@
 
     <form method="POST" action="{{ route('register') }}">
         @csrf
+        <!-- Hidden role, default to user -->
+        <input type="hidden" name="role" value="user">
 
         <!-- Name -->
         <div>

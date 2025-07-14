@@ -17,6 +17,14 @@
                 </div>
             </div>
 
+            <!-- Language Selector -->
+            <div class="hidden sm:flex sm:items-center sm:ms-6">
+                <select id="lang-switcher" class="rounded-md border-gray-300 text-sm focus:ring-primary-600 focus:border-primary-600">
+                    <option value="en">English</option>
+                    <option value="sw">Kiswahili</option>
+                </select>
+            </div>
+
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
@@ -69,6 +77,14 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+        </div>
+
+        <!-- Language Selector (mobile) -->
+        <div class="px-4 py-2">
+            <select id="lang-switcher" class="w-full rounded-md border-gray-300 text-sm focus:ring-primary-600 focus:border-primary-600">
+                <option value="en">English</option>
+                <option value="sw">Kiswahili</option>
+            </select>
         </div>
 
         <!-- Responsive Settings Options -->
