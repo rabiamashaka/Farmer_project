@@ -75,7 +75,7 @@ class SmsCampaignsController extends Controller
 
  
 
-public function store(Request $request, ModifierAfricaService $sms)
+public function store(Request $request)
 {
     $data = $request->validate([
         'title'     => 'required|string|max:255',
