@@ -13,7 +13,7 @@ class NotifyAfricanService
     public function __construct()
     {
         $this->apiKey = config('services.notifyafrican.api_key');
-        $this->baseUrl = config('services.notifyafrican.base_url', 'https://api.notifyafrican.com/v1');
+        $this->baseUrl = config('services.notifyafrican.base_url', 'https://api.notify.africa/v2');
     }
 
     public function sendSms($phone, $message)
@@ -30,7 +30,7 @@ class NotifyAfricanService
 
             if ($response->successful()) {
                 $data = $response->json();
-                Log::info('NotifyAfrican SMS sent successfully', [
+                Log::info('NotifyAfrica SMS sent successfully', [
                     'phone' => $phone,
                     'message_id' => $data['message_id'] ?? null,
                     'status' => $data['status'] ?? 'sent'

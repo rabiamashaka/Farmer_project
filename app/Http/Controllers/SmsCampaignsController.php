@@ -6,7 +6,7 @@ use App\Models\SmsCampaign;
 use App\Models\ContentTemplate;
 use App\Models\Farmer;
 use Illuminate\Http\Request;
-use App\Services\ModifierAfricaService;
+use App\Services\NotifyAfricanService;
 use App\Jobs\SendSmsJob;
 use App\Jobs\SendBulkSmsJob;
 use App\Models\Crop;
@@ -149,7 +149,7 @@ if (!empty($data['locations'])) {
 
 
   
-    public function sendQuickSms(Request $request, ModifierAfricaService $sms)
+    public function sendQuickSms(Request $request, NotifyAfricanService $sms)
     {
         $request->validate([
             'phone'   => 'required|string',
@@ -184,7 +184,7 @@ if (!empty($data['locations'])) {
     /**
      * Get account balance
      */
-    public function getBalance(ModifierAfricaService $sms)
+    public function getBalance(NotifyAfricanService $sms)
     {
         try {
             $balance = $sms->getBalance();
@@ -197,7 +197,7 @@ if (!empty($data['locations'])) {
     /**
      * Get SMS delivery status
      */
-    public function getDeliveryStatus(Request $request, ModifierAfricaService $sms)
+    public function getDeliveryStatus(Request $request, NotifyAfricanService $sms)
     {
         $request->validate([
             'message_id' => 'required|string'
