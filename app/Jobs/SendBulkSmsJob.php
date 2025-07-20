@@ -66,7 +66,7 @@ class SendBulkSmsJob implements ShouldQueue
             Log::info('Bulk SMS sent successfully', [
                 'campaign_id' => $this->campaignId,
                 'count' => count($this->phones),
-                'batch_id' => $response['batch_id'] ?? null
+                'response' => $response
             ]);
 
             // Create individual SMS logs for each phone
@@ -78,7 +78,6 @@ class SendBulkSmsJob implements ShouldQueue
                     'direction' => 'outgoing',
                     'status' => 'sent',
                     'sent_at' => now(),
-                    'batch_id' => $response['batch_id'] ?? null,
                 ]);
             }
 
