@@ -26,9 +26,8 @@ class NotifyAfricanService
                 'sender_id' => config('services.notifyafrican.sender_id'),
             ];
             Log::info('NotifyAfrica SMS request payload', $payload);
-            $response = Http::withHeaders([
+            $response = Http::asForm()->withHeaders([
                 'Authorization' => 'Bearer ' . $this->apiKey,
-                'Content-Type' => 'application/json',
             ])->post($this->baseUrl . '/send-sms', $payload);
 
             Log::info('NotifyAfrica SMS response', [
@@ -78,9 +77,8 @@ class NotifyAfricanService
                 'sender_id' => config('services.notifyafrican.sender_id'),
             ];
             Log::info('NotifyAfrica Bulk SMS request payload', $payload);
-            $response = Http::withHeaders([
+            $response = Http::asForm()->withHeaders([
                 'Authorization' => 'Bearer ' . $this->apiKey,
-                'Content-Type' => 'application/json',
             ])->post($this->baseUrl . '/send-sms', $payload);
 
             Log::info('NotifyAfrica Bulk SMS response', [
