@@ -6,34 +6,76 @@ use App\Models\SmsCampaign;
 use App\Models\ContentTemplate;
 use App\Models\Farmer;
 use Illuminate\Http\Request;
-use App\Services\AfricasTalkingService;
+use App\Services\ModifierAfricaService;
 use App\Jobs\SendSmsJob;
+use App\Jobs\SendBulkSmsJob;
 use App\Models\Crop;
  use Stichoza\GoogleTranslate\GoogleTranslate;
 
-
+use App\Models\Region;
 class SmsCampaignsController extends Controller
 {
-    /*------------------------------------------------------------------
-    | LIST CAMPAIGNS + TEMPLATE DATA
-    *-----------------------------------------------------------------*/
     public function index()
     {
+         app()->setLocale(session('locale', config('app.locale')));
         $campaigns = SmsCampaign::latest()->get();
 
         // Pre‑filled templates, regions & crops kwa modal
         $templates = ContentTemplate::where('status', 'published')->get();
-        $regions   = Farmer::distinct('location')->pluck('location');
-        $crops     = Crop::pluck('name');
+        
+        // Get regions - ensure it's always an array
+        try {
+            $regions = Region::whereIn('id', Farmer::distinct()->pluck('region_id'))->pluck('name')->toArray();
+        } catch (\Exception $e) {
+            $regions = [];
+        }
+        
+        // Get crops - ensure it's always an array
+        try {
+            $crops = Crop::pluck('name')->toArray();
+        } catch (\Exception $e) {
+            $crops = [];
+        }
+
+        // Ensure we always have arrays, even if empty
+        if (!is_array($regions)) $regions = [];
+        if (!is_array($crops)) $crops = [];
 
         return view('sms_campaigns.index', compact(
             'campaigns', 'templates', 'regions', 'crops'
         ));
     }
 
+    public function create()
+    {
+        app()->setLocale(session('locale', config('app.locale')));
+        
+        // Get regions and crops for the form
+        try {
+            $regions = Region::whereIn('id', Farmer::distinct()->pluck('region_id'))->pluck('name')->toArray();
+        } catch (\Exception $e) {
+            $regions = [];
+        }
+        
+        try {
+            $crops = Crop::pluck('name')->toArray();
+        } catch (\Exception $e) {
+            $crops = [];
+        }
+
+        // Fetch published content templates
+        $templates = ContentTemplate::where('status', 'published')->get();
+
+        // Ensure we always have arrays, even if empty
+        if (!is_array($regions)) $regions = [];
+        if (!is_array($crops)) $crops = [];
+
+        return view('sms_campaigns.create', compact('regions', 'crops', 'templates'));
+    }
+
  
 
-public function store(Request $request, AfricasTalkingService $sms)
+public function store(Request $request, ModifierAfricaService $sms)
 {
     $data = $request->validate([
         'title'     => 'required|string|max:255',
@@ -60,11 +102,12 @@ public function store(Request $request, AfricasTalkingService $sms)
 ]);
 
 
-    $farmerQuery = Farmer::query();
+  $farmerQuery = Farmer::query();
 
-    if (!empty($data['locations'])) {
-        $farmerQuery->whereIn('location', $data['locations']);
-    }
+if (!empty($data['locations'])) {
+    $farmerQuery->whereIn('region_id', $data['locations']);
+}
+
 
     if (!empty($data['crops'])) {
         $farmerQuery->whereHas('crops', function ($q) use ($data) {
@@ -74,12 +117,25 @@ public function store(Request $request, AfricasTalkingService $sms)
 
     
    $sentCount = 0;
-$farmerQuery->chunkById(200, function ($farmers) use (&$sentCount, $campaign) {
-    foreach ($farmers as $farmer) {
-        SendSmsJob::dispatch($farmer->phone, $campaign->message, $campaign->id);
-        $sentCount++;
-    }
-});
+   $phones = [];
+   
+   // Collect all phone numbers
+   $farmerQuery->chunkById(200, function ($farmers) use (&$phones, $campaign) {
+       foreach ($farmers as $farmer) {
+           $phones[] = $farmer->phone;
+       }
+   });
+   
+   // Send bulk SMS using Modifier Africa
+   if (!empty($phones)) {
+       // Split into batches of 100 for better performance
+       $batches = array_chunk($phones, 100);
+       
+       foreach ($batches as $batch) {
+           SendBulkSmsJob::dispatch($batch, $campaign->message, $campaign->id);
+           $sentCount += count($batch);
+       }
+   }
 
 
     
@@ -93,7 +149,7 @@ $farmerQuery->chunkById(200, function ($farmers) use (&$sentCount, $campaign) {
 
 
   
-    public function sendQuickSms(Request $request, AfricasTalkingService $sms)
+    public function sendQuickSms(Request $request, ModifierAfricaService $sms)
     {
         $request->validate([
             'phone'   => 'required|string',
@@ -124,5 +180,35 @@ $farmerQuery->chunkById(200, function ($farmers) use (&$sentCount, $campaign) {
         return response()->json(['error' => 'Translation failed'], 500);
     }
 }
+
+    /**
+     * Get account balance
+     */
+    public function getBalance(ModifierAfricaService $sms)
+    {
+        try {
+            $balance = $sms->getBalance();
+            return response()->json($balance);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to get balance'], 500);
+        }
+    }
+
+    /**
+     * Get SMS delivery status
+     */
+    public function getDeliveryStatus(Request $request, ModifierAfricaService $sms)
+    {
+        $request->validate([
+            'message_id' => 'required|string'
+        ]);
+
+        try {
+            $status = $sms->getDeliveryStatus($request->message_id);
+            return response()->json($status);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to get status'], 500);
+        }
+    }
 
 }

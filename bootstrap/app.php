@@ -12,15 +12,15 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // push setlocale to web group
+        // Attach the SetLocale middleware to every web request
         $middleware->prependToGroup('web', \App\Http\Middleware\SetLocale::class);
-        // ✅ Register custom middleware aliases here
+
         $middleware->alias([
-            'role'=>\App\Http\Middleware\RoleMiddleware::class,
-            'setlocale'=>\App\Http\Middleware\SetLocale::class,
+            'role' => \App\Http\Middleware\RoleMiddleware::class,
+           
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        // Optional: customize exception handling
     })
     ->create();

@@ -18,12 +18,20 @@
             </div>
 
             <!-- Language Selector -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <select id="lang-switcher" class="rounded-md border-gray-300 text-sm focus:ring-primary-600 focus:border-primary-600">
-                    <option value="en">English</option>
-                    <option value="sw">Kiswahili</option>
-                </select>
-            </div>
+        <div class="hidden sm:flex sm:items-center sm:ms-6">
+    <form id="mobile-lang-form" method="POST" action="{{ url('/set-locale/' . app()->getLocale()) }}">
+    @csrf
+    <select id="lang-switcher-mobile"
+            name="locale"
+            class="w-full rounded-md border-gray-300 text-sm"
+            onchange="this.form.action = '/set-locale/' + this.value; this.form.submit();">
+        <option value="en" {{ app()->getLocale() == 'en' ? 'selected' : '' }}>English</option>
+        <option value="sw" {{ app()->getLocale() == 'sw' ? 'selected' : '' }}>Kiswahili</option>
+    </select>
+</form>
+
+</div>
+
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">

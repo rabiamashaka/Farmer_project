@@ -12,6 +12,9 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
+        // Set the locale from the session before rendering the view
+        app()->setLocale(session('locale', config('app.locale')));
+
         $today = Carbon::today();
 
         $activeFarmers    = 0;
@@ -58,8 +61,13 @@ class DashboardController extends Controller
 
             foreach ($latestWeather as $weather) {
                 if ($weather->rain > 0 || $weather->temperature > 35 || $weather->temperature < 15) {
+                    $regionName = $weather->region ? $weather->region->name : 'Unknown Region';
+                    $condition = $weather->condition ?? 'Unknown';
+                    $temperature = $weather->temperature ?? 0;
+                    $rain = $weather->rain ?? 0;
+                    
                     $notifications[] = [
-                        'message' => "📍 {$weather->region->name} - {$weather->condition}, 🌡 {$weather->temperature}°C, 🌧 {$weather->rain}mm",
+                        'message' => "📍 {$regionName} - {$condition}, 🌡 {$temperature}°C, 🌧 {$rain}mm",
                         'time'    => $weather->measured_at->diffForHumans(),
                     ];
                 }

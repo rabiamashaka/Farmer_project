@@ -37,29 +37,29 @@ class UssdController extends Controller
             return $this->servicesMenu(); // comes from UssdMenuTrait
         }
 
-        // Level‑1 – service choice
+        // Level‑1 – service choice
         if (count($steps) === 1) {
             return $this->processServiceChoice($steps[0], $phone);
         }
 
-        return $this->end('Chaguo batili!');
+        return $this->end(__('Invalid choice!'));
     }
 
     private function processServiceChoice(string $choice, string $phone)
     {
         return match ($choice) {
             '1' => $this->afterSms(
-                        'Umejiunga na updates za SampleUSSD.',
+                        __('You have subscribed to SampleUSSD updates.'),
                         $phone,
-                        'SMS imetumwa — Asante!'
+                        __('SMS sent — Thank you!')
                     ),
             '2' => $this->afterSms(
-                        'Hii ni huduma ya taarifa kutoka SampleUSSD.',
+                        __('This is an information service from SampleUSSD.'),
                         $phone,
-                        'Taarifa zaidi zitakujia kwa SMS.'
+                        __('More information will come via SMS.')
                     ),
-            '3' => $this->end('Karibu tena!'),
-            default => $this->end('Chaguo batili!'),
+            '3' => $this->end(__('Welcome back!')),
+            default => $this->end(__('Invalid choice!')),
         };
     }
 
@@ -71,38 +71,38 @@ class UssdController extends Controller
 
         switch ($step) {
             case 0:
-                return $this->cont("Karibu SampleUSSD\n1. Sajili\n2. Toka");
+                return $this->cont(__("Welcome SampleUSSD\n1. Register\n2. Exit"));
 
             case 1:
                 return match ($steps[0] ?? '') {
-                    '1' => $this->cont('Weka Jina Kamili:'),
-                    '2' => $this->end('Asante! Karibu tena.'),
-                    default => $this->end('Chaguo batili!'),
+                    '1' => $this->cont(__('Enter Full Name:')),
+                    '2' => $this->end(__('Thank you! Welcome back.')),
+                    default => $this->end(__('Invalid choice!')),
                 };
 
             case 2:
                 // Ask user to TYPE region name (free text)
-                return $this->cont('Weka Location (mf: Mbeya):');
+                return $this->cont(__('Enter Location (e.g: Mbeya):'));
 
             case 3:
                 /* Ask for Farming Type */
                 return $this->cont(
-                    "Chagua Farming Type:\n" .
-                    "1. Crop  2. Livestock  3. Mixed"
+                    __("Choose Farming Type:\n") .
+                    __("1. Crop  2. Livestock  3. Mixed")
                 );
 
             case 4:
                 /* Ask for crops – user types names separated by commas */
                 return $this->cont(
-                    "Taja mazao yako, tenganisha kwa koma\n" .
-                    "(mf: Mahindi,Maharage)"
+                    __("List your crops, separate with commas\n") .
+                    __("(e.g: Maize,Beans)")
                 );
 
             case 5:
                 return $this->saveFarmer($steps, $phone);
 
             default:
-                return $this->end('Chaguo batili!');
+                return $this->end(__('Invalid choice!'));
         }
     }
 
@@ -117,7 +117,7 @@ class UssdController extends Controller
         /* ─────────── Validate Region ─────────── */
         $region = Region::whereRaw('LOWER(name) = ?', [strtolower($regionName)])->first();
         if (!$region) {
-            return $this->end('Samahani, mkoa huo haupo.');
+            return $this->end(__('Sorry, that region does not exist.'));
         }
         $location = $region->name; // Keep DB‑canonical spelling
 
@@ -125,12 +125,12 @@ class UssdController extends Controller
         $typeMap = ['1' => 'Crop', '2' => 'Livestock', '3' => 'Mixed'];
         $farmingType = $typeMap[$typeChoice] ?? null;
         if (!$farmingType) {
-            return $this->end('Chaguo la farming type si sahihi.');
+            return $this->end(__('Invalid farming type choice.'));
         }
 
         $inputCropNames = array_filter(array_map('trim', explode(',', $cropNamesCsv)));
         if (empty($inputCropNames)) {
-            return $this->end('Tafadhali taja angalau zao moja.');
+            return $this->end(__('Please specify at least one crop.'));
         }
 
         $cropModels = Crop::whereIn('name', $inputCropNames)->get();
@@ -138,7 +138,7 @@ class UssdController extends Controller
         $missing    = array_diff(array_map('strtolower', $inputCropNames), $foundNames);
 
         if ($missing) {
-            return $this->end('Mazao yasiyopatikana: ' . implode(', ', $missing));
+            return $this->end(__('Crops not found: ') . implode(', ', $missing));
         }
 
         $cropIds = $cropModels->pluck('id')->toArray();
@@ -156,7 +156,7 @@ class UssdController extends Controller
         /* Sync crops in pivot table */
         $farmer->crops()->sync($cropIds);
 
-        return $this->end("Asante $name, umesajiliwa!");
+        return $this->end(__("Thank you $name, you are registered!"));
     }
 
     /* ─────────── RESPONSE HELPERS ─────────── */

@@ -15,13 +15,17 @@ class analytics extends Controller
 {
     public function analytics()
     {
+ app()->setLocale(session('locale', config('app.locale')));
+
         $totalFarmers = Farmer::count();
         $totalContent = ContentTemplate::count();
         $smsSent = SmsLog::count();
         $deliveryRate = SmsLog::where('status', 'Delivered')->count() / max(1, $smsSent) * 100;
 
-        $farmersByRegion = Farmer::select('location as region', DB::raw('count(*) as total'))
-            ->groupBy('location')->get();
+       
+$farmersByRegion = Farmer::select('region_id', DB::raw('count(*) as total'))
+    ->groupBy('region_id')
+    ->get();
 
         $contentDistribution = ContentTemplate::select('category', DB::raw('count(*) as total'))
             ->groupBy('category')->get();

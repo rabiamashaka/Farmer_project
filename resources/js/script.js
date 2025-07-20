@@ -31,6 +31,8 @@ function toggleChat() {
     const chatbot = document.getElementById('chatbot');
     const chatToggle = document.getElementById('chatToggle');
     
+    if (!chatbot || !chatToggle) return;
+    
     chatOpen = !chatOpen;
     
     if (chatOpen) {
@@ -46,6 +48,8 @@ function openChat() {
     const chatbot = document.getElementById('chatbot');
     const chatToggle = document.getElementById('chatToggle');
     
+    if (!chatbot || !chatToggle) return;
+    
     chatOpen = true;
     chatbot.classList.add('active');
     chatToggle.style.display = 'none';
@@ -54,6 +58,8 @@ function openChat() {
 function closeChat() {
     const chatbot = document.getElementById('chatbot');
     const chatToggle = document.getElementById('chatToggle');
+    
+    if (!chatbot || !chatToggle) return;
     
     chatOpen = false;
     chatbot.classList.remove('active');
@@ -64,20 +70,22 @@ function sendMessage() {
     const input = document.getElementById('chatInput');
     const message = input.value.trim();
     
-    if (message) {
-        addMessage(message, 'user');
-        input.value = '';
-        
-        // Simulate bot response after a short delay
-        setTimeout(() => {
-            const response = generateBotResponse(message);
-            addMessage(response, 'bot');
-        }, 1000);
-    }
+    if (!input || !message) return;
+    
+    addMessage(message, 'user');
+    input.value = '';
+    
+    // Simulate bot response after a short delay
+    setTimeout(() => {
+        const response = generateBotResponse(message);
+        addMessage(response, 'bot');
+    }, 1000);
 }
 
 function addMessage(text, sender) {
     const messagesContainer = document.getElementById('chatMessages');
+    if (!messagesContainer) return;
+    
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${sender}-message`;
     
@@ -124,51 +132,61 @@ function handleKeyPress(event) {
 }
 
 // Smooth scrolling for navigation links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
+const anchorLinks = document.querySelectorAll('a[href^="#"]');
+if (anchorLinks.length) {
+    anchorLinks.forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
     });
-});
+}
 
 // Contact form handling
-document.querySelector('.contact-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    // Get form data
-    const formData = new FormData(this);
-    const name = this.querySelector('input[type="text"]').value;
-    const email = this.querySelector('input[type="email"]').value;
-    const message = this.querySelector('textarea').value;
-    
-    // Simulate form submission
-    alert(`Thank you, ${name}! Your message has been sent. We'll get back to you soon.`);
-    
-    // Reset form
-    this.reset();
-});
+const contactForm = document.querySelector('.contact-form');
+if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        // Get form data
+        const formData = new FormData(this);
+        const name = this.querySelector('input[type="text"]').value;
+        const email = this.querySelector('input[type="email"]').value;
+        const message = this.querySelector('textarea').value;
+        // Simulate form submission
+        alert(`Thank you, ${name}! Your message has been sent. We'll get back to you soon.`);
+        // Reset form
+        this.reset();
+    });
+}
 
 // Add scroll effect to header
 window.addEventListener('scroll', function() {
     const header = document.querySelector('.header');
-    if (window.scrollY > 100) {
-        header.style.background = 'rgba(255, 255, 255, 0.98)';
-    } else {
-        header.style.background = 'rgba(255, 255, 255, 0.95)';
+    if (header) {
+        if (window.scrollY > 100) {
+            header.style.background = 'rgba(255, 255, 255, 0.98)';
+        } else {
+            header.style.background = 'rgba(255, 255, 255, 0.95)';
+        }
     }
 });
 
 // Mobile navigation toggle
-document.querySelector('.nav-toggle').addEventListener('click', function() {
-    const navMenu = document.querySelector('.nav-menu');
-    navMenu.classList.toggle('active');
-});
+const navToggle = document.querySelector('.nav-toggle');
+if (navToggle) {
+    navToggle.addEventListener('click', function() {
+        const navMenu = document.querySelector('.nav-menu');
+        if (navMenu) {
+            navMenu.classList.toggle('active');
+        }
+    });
+}
 
 // Add animation on scroll
 const observerOptions = {
@@ -200,7 +218,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!chatOpen) {
             // Show a notification bubble
             const chatToggle = document.getElementById('chatToggle');
-            chatToggle.style.animation = 'pulse 2s infinite';
+            if (chatToggle) {
+                chatToggle.style.animation = 'pulse 2s infinite';
+            }
         }
     }, 3000);
 });

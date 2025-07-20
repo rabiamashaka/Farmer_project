@@ -9,24 +9,22 @@ class Farmer extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-        'phone',
-        'location',
-        'farming_type',
-        'region_id',     // MUHIMU: ruhusu mass‑assignment
-    ];
+  protected $fillable = [
+    'user_id',
+    'name',
+    'phone',
+    'region_id',
+    'farming_type',
+];
 
-    /*--------------------------------------------------
-    | Relationships
-    *-------------------------------------------------*/
-    public function crops()
-    {
-        return $this->belongsToMany(Crop::class);
-    }
+public function region()
+{
+    return $this->belongsTo(Region::class);
+}
 
-    public function region()
-    {
-        return $this->belongsTo(Region::class);
-    }
+public function crops()
+{
+    return $this->belongsToMany(Crop::class);
+}
+
 }

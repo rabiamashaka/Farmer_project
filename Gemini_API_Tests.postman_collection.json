@@ -1,0 +1,146 @@
+{
+	"info": {
+		"_postman_id": "gemini-agriculture-api-tests",
+		"name": "Gemini Agriculture API Tests",
+		"description": "Collection for testing the Gemini Agriculture API endpoint",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Ask Agriculture Question - Tomatoes",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"question\": \"What are the best practices for growing tomatoes in Kenya?\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/askagricultureexpert",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"askagricultureexpert"
+					]
+				}
+			}
+		},
+		{
+			"name": "Ask Agriculture Question - Soil Fertility",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"question\": \"How can I improve soil fertility naturally?\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/askagricultureexpert",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"askagricultureexpert"
+					]
+				}
+			}
+		},
+		{
+			"name": "Ask Agriculture Question - Pest Control",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"question\": \"What are the common pests that affect maize crops?\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/askagricultureexpert",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"askagricultureexpert"
+					]
+				}
+			}
+		},
+		{
+			"name": "Test Invalid Request - Missing Question",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/askagricultureexpert",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"askagricultureexpert"
+					]
+				}
+			}
+		},
+		{
+			"name": "Test Non-Agriculture Question",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"question\": \"What is the capital of France?\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/askagricultureexpert",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"askagricultureexpert"
+					]
+				}
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000"
+		}
+	]
+} 

@@ -42,6 +42,15 @@ return [
     'exclude' => env('OPENWEATHER_EXCLUDE', 'minutely,hourly,daily,alerts'),
 ],
 
+'gemini' => [
+    'api_key' => env('GEMINI_API_KEY'),
+],
+
+'notifyafrican' => [
+    'api_key' => env('NOTIFYAFRICAN_API_KEY'),
+    'base_url' => env('NOTIFYAFRICAN_BASE_URL', 'https://api.notify.africa/v2'),
+    'sender_id' => env('NOTIFYAFRICAN_SENDER_ID', 'YOUR_SENDER_ID'),
+],
 
 
 ];

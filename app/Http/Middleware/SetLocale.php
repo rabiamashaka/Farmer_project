@@ -14,14 +14,21 @@ class SetLocale
      */
     public function handle(Request $request, Closure $next)
     {
+        // Get locale from session, fallback to config
         $locale = session('locale', config('app.locale'));
-        $allowed = config('app.available_locales', [config('app.locale')]);
 
+        // Validate locale is allowed
+        $allowed = config('app.available_locales', ['en', 'sw']);
         if (!in_array($locale, $allowed)) {
             $locale = config('app.locale');
         }
 
+        // Set the application locale
         App::setLocale($locale);
+
+        // Optional: Debug log (you can comment these in production)
+        \Log::info("SetLocale middleware: Session locale = " . session('locale'));
+        \Log::info("SetLocale middleware: App locale set to = " . App::getLocale());
 
         return $next($request);
     }

@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Services\AfricasTalkingService;
+use App\Services\ModifierAfricaService;
 use App\Models\SmsLog;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -31,15 +31,16 @@ class SendSmsJob implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(AfricasTalkingService $sms)
+    public function handle(ModifierAfricaService $sms)
     {
         $response = $sms->sendSms($this->phone, $this->message);
 
-        // Determine status from Africa's Talking response
-        $status = is_array($response)
-            && isset($response['data']['SMSMessageData']['Recipients'][0]['status'])
-            ? $response['data']['SMSMessageData']['Recipients'][0]['status']
-            : 'Unknown';
+        // Determine status from Modifier Africa response
+        $status = isset($response['status']) ? $response['status'] : 'Unknown';
+        
+        if (isset($response['error'])) {
+            $status = 'failed';
+        }
 
         // Save SMS log to database
         SmsLog::create([
@@ -49,6 +50,7 @@ class SendSmsJob implements ShouldQueue
             'direction'   => 'outgoing',
             'status'      => $status,
             'sent_at'     => now(),
+            'message_id'  => $response['message_id'] ?? null,
         ]);
     }
 }

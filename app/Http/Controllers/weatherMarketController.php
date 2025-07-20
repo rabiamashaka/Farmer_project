@@ -15,8 +15,9 @@ class WeatherMarketController extends Controller
      * ‑ Huleta REKODI YA KARIBUNI kwa kila region (weather)
      * ‑ Huleta bei tano (5) za mwisho sokoni (market)
      */
-    public function index()   // badala ya “show” ili iendane na REST convent­ion
+    public function index()
     {
+        app()->setLocale(session('locale', config('app.locale')));
         // ① Weather – latest per region
         $weatherReadings = Weather::with('region')
             ->latest('measured_at')

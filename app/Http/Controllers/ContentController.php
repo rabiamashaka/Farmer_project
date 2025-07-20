@@ -15,6 +15,7 @@ class ContentController extends Controller
     *-------------------------------------------------*/
     public function index()
     {
+         app()->setLocale(session('locale', config('app.locale')));
         $templates = ContentTemplate::latest()->paginate(10);
         return view('content.index', compact('templates'));
     }

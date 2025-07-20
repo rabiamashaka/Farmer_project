@@ -70,3 +70,49 @@ document.addEventListener('DOMContentLoaded', () => {
         saveLocale(lang);
     });
 });
+
+// Language switching functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle language switcher dropdown
+    const langSwitcher = document.getElementById('lang-switcher');
+    if (langSwitcher) {
+        langSwitcher.addEventListener('change', function() {
+            const selectedLang = this.value;
+            const form = document.getElementById('lang-form');
+            if (form) {
+                form.action = `/set-locale/${selectedLang}`;
+                form.submit();
+            }
+        });
+    }
+
+    // Add smooth language switching for mobile
+    const mobileLangSwitcher = document.querySelector('#lang-switcher[class*="w-full"]');
+    if (mobileLangSwitcher) {
+        mobileLangSwitcher.addEventListener('change', function() {
+            const selectedLang = this.value;
+            window.location.href = `/set-locale/${selectedLang}`;
+        });
+    }
+
+    // Show current language in UI
+    const currentLang = document.documentElement.lang || 'en';
+    const langIndicators = document.querySelectorAll('.current-lang');
+    langIndicators.forEach(indicator => {
+        indicator.textContent = currentLang === 'en' ? 'English' : 'Kiswahili';
+    });
+});
+
+// Translation helper function
+window.translate = function(key, parameters = {}) {
+    // This would typically call a backend endpoint
+    // For now, we'll use the Laravel translation system
+    return key;
+};
+
+// Auto-refresh page content when language changes
+window.addEventListener('storage', function(e) {
+    if (e.key === 'locale') {
+        window.location.reload();
+    }
+});
