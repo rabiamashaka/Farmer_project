@@ -52,4 +52,37 @@ class NotifyAfricanService
             return ['error' => $e->getMessage(), 'status' => 'failed'];
         }
     }
+
+    /**
+     * Send bulk SMS to multiple recipients.
+     *
+     * @param array $phones
+     * @param string $message
+     * @return array
+     */
+    public function sendBulkSms(array $phones, string $message)
+    {
+        try {
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $this->apiKey,
+                'Content-Type' => 'application/json',
+            ])->post($this->baseUrl . '/sms/bulk-send', [
+                'to' => $phones,
+                'message' => $message,
+                'sender_id' => config('services.notifyafrican.sender_id'),
+            ]);
+
+            if ($response->successful()) {
+                $data = $response->json();
+                return [
+                    'batch_id' => $data['batch_id'] ?? null,
+                    'status' => $data['status'] ?? 'sent',
+                ];
+            } else {
+                return ['error' => 'Failed to send bulk SMS', 'status' => 'failed'];
+            }
+        } catch (\Exception $e) {
+            return ['error' => $e->getMessage(), 'status' => 'failed'];
+        }
+    }
 } 

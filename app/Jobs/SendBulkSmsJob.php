@@ -2,9 +2,9 @@
 
 namespace App\Jobs;
 
-use App\Services\ModifierAfricaService;
 use App\Models\SmsLog;
 use App\Models\SmsCampaign;
+use App\Services\NotifyAfricanService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -35,7 +35,7 @@ class SendBulkSmsJob implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(ModifierAfricaService $sms)
+    public function handle(NotifyAfricanService $sms)
     {
         try {
             // Send bulk SMS using Modifier Africa
