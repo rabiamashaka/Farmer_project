@@ -22,7 +22,7 @@ class NotifyAfricanService
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $this->apiKey,
                 'Content-Type' => 'application/json',
-            ])->post($this->baseUrl . '/sms/send', [
+            ])->post($this->baseUrl . '/sms/send-sms', [
                 'to' => $phone,
                 'message' => $message,
                 'sender_id' => config('services.notifyafrican.sender_id'),

@@ -49,7 +49,7 @@ return [
 'notifyafrican' => [
     'api_key' => env('NOTIFYAFRICA_API_KEY'),
     'base_url' => env('NOTIFYAFRICA_BASE_URL', 'https://api.notify.africa/v2'),
-    'sender_id' => env('NOTIFYAFRICA_SENDER_ID', 'YOUR_SENDER_ID'),
+    'sender_id' => env('NOTIFYAFRICA_SENDER_ID', '55'),
 ],
 
 
