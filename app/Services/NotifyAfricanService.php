@@ -20,7 +20,9 @@ class NotifyAfricanService
     {
         try {
             $payload = [
-                'recipients' => [$phone],
+                'recipients' => [
+                    ['number' => $phone]
+                ],
                 'sms' => $message,
                 'schedule' => 'none',
                 'sender_id' => config('services.notifyafrican.sender_id'),
