@@ -15,8 +15,7 @@ use Illuminate\View\View;
 
 use App\Models\Crop;
 use App\Models\Farmer;
-
-
+use App\Services\NotifyAfricanService;
 
 class RegisteredUserController extends Controller
 {
@@ -73,6 +72,8 @@ class RegisteredUserController extends Controller
 
 
         auth()->login($user);   // or Auth::login($user);
+        $notify = new NotifyAfricanService();
+        $notify->sendSms($user->phone, __('Welcome to our platform! Your registration is successful.'));
 
         return redirect()->route('userdashboard');  // adjust to your post-register route
     }
