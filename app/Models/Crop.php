@@ -12,4 +12,9 @@ class Crop extends Model
     {
         return $this->belongsToMany(Farmer::class);
     }
+
+    public function information()
+    {
+        return $this->hasMany(\App\Models\CropInformation::class);
+    }
 }

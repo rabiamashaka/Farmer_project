@@ -29,6 +29,10 @@
            class="block px-3 py-2 rounded font-medium {{ request()->routeIs('weather-market') ? 'bg-white text-green-700' : 'text-green-100 hover:text-white hover:bg-green-700' }}">
            {{ __('Weather & Market Data') }}
         </a>
+        <a href="{{ route('admin.cropinfo.index') }}"
+        class="block px-3 py-2 rounded font-medium {{ request()->routeIs('weather-market') ? 'bg-white text-green-700' : 'text-green-100 hover:text-white hover:bg-green-700' }}">
+        Crop Information
+</a>
         <a href="{{ route('sms_campaigns.index') }}"
            class="block px-3 py-2 rounded font-medium {{ request()->routeIs('sms_campaigns.*') ? 'bg-white text-green-700' : 'text-green-100 hover:text-white hover:bg-green-700' }}">
            {{ __('SMS Campaigns') }}

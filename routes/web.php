@@ -13,7 +13,9 @@ use App\Http\Controllers\{
     Sms_logs,
     Analytics,
     SmsCampaignsController,
-    TestSmsController
+    TestSmsController,
+    UserDashboardController,
+    CropInformationController
 };
 
 use App\Services\NotifyAfricanService;
@@ -49,11 +51,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/sms_campaigns/balance', [SmsCampaignsController::class, 'getBalance'])->name('sms_campaigns.balance');
         Route::post('/sms_campaigns/delivery-status', [SmsCampaignsController::class, 'getDeliveryStatus'])->name('sms_campaigns.deliveryStatus');
         Route::get('/analytics', [Analytics::class, 'analytics'])->name('analytics');
+        Route::prefix('admin/crop-information')->name('admin.cropinfo.')->group(function () {
+            Route::get('/', [\App\Http\Controllers\CropInformationController::class, 'index'])->name('index');
+            Route::get('/create', [\App\Http\Controllers\CropInformationController::class, 'create'])->name('create');
+            Route::post('/store', [\App\Http\Controllers\CropInformationController::class, 'store'])->name('store');
+            Route::get('/{cropinfo}/edit', [\App\Http\Controllers\CropInformationController::class, 'edit'])->name('edit');
+            Route::put('/{cropinfo}', [\App\Http\Controllers\CropInformationController::class, 'update'])->name('update');
+            Route::delete('/{cropinfo}', [\App\Http\Controllers\CropInformationController::class, 'destroy'])->name('destroy');
+        });
     });
 
     /* ----- Farmer ----- */
     Route::middleware('role:user')->group(function () {
-        Route::view('/userdashboard', 'userdashboard')->name('userdashboard');
+        Route::get('/userdashboard', [\App\Http\Controllers\UserDashboardController::class, 'index'])->name('userdashboard');
+        Route::post('/userdashboard/weather', [\App\Http\Controllers\UserDashboardController::class, 'fetchWeather'])->name('userdashboard.weather');
+        Route::post('/userdashboard/feedback', [\App\Http\Controllers\UserDashboardController::class, 'sendFeedback'])->name('userdashboard.feedback');
+        Route::post('/userdashboard/cropinfo', [\App\Http\Controllers\UserDashboardController::class, 'cropInfo'])->name('userdashboard.cropinfo');
     });
 
     /* ----- Shared Routes ----- */

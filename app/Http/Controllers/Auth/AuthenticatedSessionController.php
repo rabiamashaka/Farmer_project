@@ -46,6 +46,14 @@ class AuthenticatedSessionController extends Controller
         return redirect()->intended($target);
     }
 
+    protected function authenticated($request, $user)
+    {
+        if ($user->role === 'admin') {
+            return redirect()->route('dashboard');
+        }
+        return redirect()->route('userdashboard');
+    }
+
     /**
      * Log the user out and invalidate the session.
      */

@@ -46,4 +46,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function crops()
+    {
+        return $this->belongsToMany(\App\Models\Crop::class, 'crop_farmer', 'farmer_id', 'crop_id');
+    }
+
+    public function region()
+    {
+        return $this->belongsTo(\App\Models\Region::class, 'region_id');
+    }
 }

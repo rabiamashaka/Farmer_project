@@ -105,9 +105,11 @@ public function store(Request $request)
   $farmerQuery = Farmer::query();
 
 if (!empty($data['locations'])) {
+    $regionNames = Region::whereIn('id', $data['locations'])->pluck('name')->toArray();
     $farmerQuery->whereIn('region_id', $data['locations']);
+} else {
+    $regionNames = null;
 }
-
 
     if (!empty($data['crops'])) {
         $farmerQuery->whereHas('crops', function ($q) use ($data) {
