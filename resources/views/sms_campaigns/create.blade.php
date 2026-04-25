@@ -57,7 +57,7 @@
 
                 <!-- Add Content Button -->
                 <div class="mb-6 flex justify-end">
-                    <a href="{{ route('content.create') }}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                    <a href="{{ route('content.create') }}" class="inline-block bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
                         + {{ __('Create Content Template') }}
                     </a>
                 </div>
@@ -136,12 +136,12 @@
                                 {{ __('Target Locations') }}
                             </label>
                             <div class="grid grid-cols-3 gap-3 max-h-40 overflow-y-auto border border-gray-200 rounded p-3">
-                                @if(is_array($regions) && count($regions) > 0)
+                                @if(is_iterable($regions) && count($regions) > 0)
                                     @foreach ($regions as $region)
                                         <label class="inline-flex items-center space-x-2">
-                                            <input type="checkbox" name="locations[]" value="{{ $region }}"
+                                            <input type="checkbox" name="locations[]" value="{{ $region->id }}"
                                                    class="form-checkbox text-indigo-600">
-                                            <span>{{ $region }}</span>
+                                            <span>{{ $region->name }}</span>
                                         </label>
                                     @endforeach
                                 @else
@@ -156,12 +156,12 @@
                                 {{ __('Target Crop Types') }}
                             </label>
                             <div class="grid grid-cols-3 gap-3 max-h-40 overflow-y-auto border border-gray-200 rounded p-3">
-                                @if(is_array($crops) && count($crops) > 0)
+                                @if(is_iterable($crops) && count($crops) > 0)
                                     @foreach ($crops as $crop)
                                         <label class="inline-flex items-center space-x-2">
-                                            <input type="checkbox" name="crops[]" value="{{ $crop }}"
+                                            <input type="checkbox" name="crops[]" value="{{ $crop->name }}"
                                                    class="form-checkbox text-indigo-600">
-                                            <span>{{ ucfirst($crop) }}</span>
+                                            <span>{{ ucfirst($crop->name) }}</span>
                                         </label>
                                     @endforeach
                                 @else
@@ -177,8 +177,8 @@
                                 {{ __('Cancel') }}
                             </a>
                             <button type="submit"
-                                    class="px-5 py-2 rounded bg-indigo-600 text-white hover:bg-indigo-700 transition">
-                                {{ __('Create Campaign') }}
+                                    class="px-5 py-2 rounded bg-green-600 text-white hover:bg-green-700 transition">
+                                {{ __('send and create Campaign') }}
                             </button>
                         </div>
                     </form>

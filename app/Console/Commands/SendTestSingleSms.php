@@ -26,7 +26,7 @@ class SendTestSingleSms extends Command
      */
     public function handle(NotifyAfricanService $sms)
     {
-        $phone = '255686477074';
+        $phone = '255621437847';
         $message = 'This is a test single SMS from Artisan command.';
 
         $this->info('Sending single SMS...');

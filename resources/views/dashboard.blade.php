@@ -55,12 +55,7 @@
             <h1 class="text-2xl font-semibold mb-1">{{ __('Dashboard') }}</h1>
             <p class="text-sm text-gray-500 mb-6">{{ __('Welcome back, Agricultural Officer') }}</p>
 
-            <!-- Weather Notifications -->
-            @foreach ($notifications as $note)
-                <div class="mb-4 bg-yellow-100 border-l-4 border-yellow-500 p-4 rounded">
-                    {{ $note['message'] }} <span class="text-sm text-gray-500">({{ $note['time'] }})</span>
-                </div>
-            @endforeach
+           
 
             <!-- Stats Cards -->
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8">
@@ -70,7 +65,7 @@
                 </div>
                 <div class="bg-white p-5 rounded shadow">
                     <p class="text-sm text-gray-500">{{ __('SMS Sent Today') }}</p>
-                    <h2 class="text-2xl font-bold">{{ $smsSentToday }}</h2>
+                    <h2 class="text-2xl font-bold">{{ $sent }}</h2>
                 </div>
                 <div class="bg-white p-5 rounded shadow">
                     <p class="text-sm text-gray-500">{{ __('Published Content') }}</p>
@@ -98,7 +93,7 @@
         </div>
     </a>
 
-    <a href="">
+    <a href="{{ route('sms_campaigns.create') }}">
         <div class="bg-white p-4 rounded shadow border-l-4 border-blue-500 hover:bg-blue-50 transition">
             <h4 class="font-bold">{{ __('Send SMS') }}</h4>
             <p class="text-sm text-gray-500">{{ __('Send alert to farmers') }}</p>

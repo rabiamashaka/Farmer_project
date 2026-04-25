@@ -21,7 +21,7 @@ class DashboardController extends Controller
         $smsSentToday     = 0;
         $publishedContent = 0;
         $deliveryRate     = 0;
-
+        $sent = 0;
         // ACTIVE FARMERS
         if (Schema::hasTable('farmers')) {
             $activeFarmers = DB::table('farmers')->count();
@@ -41,14 +41,15 @@ class DashboardController extends Controller
             $deliveryRate = $totalSent
                 ? round(($totalDelivered / $totalSent) * 100, 1)
                 : 0;
+                 $sent = DB::table('sms_logs')->where('status', 'sent')->count();
         }
 
         // PUBLISHED CONTENT
-        if (Schema::hasTable('contents')) {
-            $publishedContent = DB::table('contents')
-                ->where('status', 'published')
-                ->count();
-        }
+       if (Schema::hasTable('content_templates')) {
+    $publishedContent = DB::table('content_templates')
+        ->where('status', 'published')
+        ->count();
+}
 
         // WEATHER NOTIFICATIONS (recent, extreme or rainy)
         $notifications = [];
@@ -67,7 +68,7 @@ class DashboardController extends Controller
                     $rain = $weather->rain ?? 0;
                     
                     $notifications[] = [
-                        'message' => "📍 {$regionName} - {$condition}, 🌡 {$temperature}°C, 🌧 {$rain}mm",
+                        'message' => " {$regionName} - {$condition},  {$temperature}°C,  {$rain}mm",
                         'time'    => $weather->measured_at->diffForHumans(),
                     ];
                 }
@@ -79,7 +80,8 @@ class DashboardController extends Controller
             'smsSentToday',
             'publishedContent',
             'deliveryRate',
-            'notifications'
+            'notifications',
+            'sent'
         ));
     }
 }

@@ -4,36 +4,67 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Crop;
+use Illuminate\Support\Str;
 
 class CropSeeder extends Seeder
 {
     public function run(): void
     {
         $crops = [
-            // Mazao ya chakula
-            'maize', 'rice', 'sorghum', 'millet', 'cassava',
-            'sweet potato', 'irish potato', 'beans', 'cowpea',
-            'pigeon pea', 'soya bean',
+            'mahindi',
+            'mchele',
+            'mtama',
+            'uwele',
+            'ulezi',
+            'mihogo',
+            'viazi vitamu',
+            'viazi mviringo',
+            'maharage',
+            'kunde',
+            'mbaazi',
+            'soya',
 
-            // Mazao ya biashara/mwili
-            'coffee', 'tea', 'cotton', 'tobacco', 'cashew nut',
-            'sisal', 'sugarcane', 'sunflower', 'sesame',
+            'kahawa',
+            'chai',
+            'pamba',
+            'tumbaku',
+            'korosho',
+            'mkonge',
+            'miwa',
+            'alizeti',
+            'ufuta',
 
-            // Mazao ya mboga
-            'tomato', 'onion', 'cabbage', 'carrot', 'spinach',
-            'okra', 'pepper', 'cucumber', 'watermelon',
+            'nyanya',
+            'kitunguu',
+            'kabichi',
+            'karoti',
+            'spinachi',
+            'bamia',
+            'pilipili',
+            'matango',
+            'tikiti maji',
 
-            // Mazao ya matunda
-            'banana', 'plantain', 'mango', 'pineapple',
-            'citrus', 'avocado', 'papaya', 'passion fruit',
-            'jackfruit', 'guava',
+            'ndizi',
+            'ndizi za kupika',
+            'embe',
+            'nanasi',
+            'machungwa',
+            'parachichi',
+            'papai',
+            'passion',
+            'fenesi',
+            'pera',
 
-            // Mafuta na viungo
-            'groundnut', 'coconut', 'clove', 'cardamom',
+            'karanga',
+            'nazi',
+            'karafuu',
+            'iliki',
         ];
 
-        foreach ($crops as $crop) {
-            Crop::firstOrCreate(['name' => $crop]);
+        foreach ($crops as $name) {
+            Crop::firstOrCreate([
+                'name' => Str::lower(trim($name)),
+            ]);
         }
     }
 }

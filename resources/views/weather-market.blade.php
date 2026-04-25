@@ -105,33 +105,34 @@
                 </div>
 
                 {{-- ───────────────── Market section ───────────────── --}}
-                <h3 class="text-lg font-semibold text-green-700 mb-2"> Market Prices</h3>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full border border-gray-200 text-sm text-left">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th class="px-4 py-2 border">Crop</th>
-                                <th class="px-4 py-2 border">Region</th>
-                                <th class="px-4 py-2 border">Price (TZS/kg)</th>
-                                <th class="px-4 py-2 border">Updated</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($marketData as $entry)
-                                <tr class="@if($loop->odd) bg-gray-50 @endif">
-                                    <td class="px-4 py-2 border">{{ $entry->crop->name }}</td>
-                                    <td class="px-4 py-2 border">{{ $entry->region->name }}</td>
-                                    <td class="px-4 py-2 border">{{ number_format($entry->price, 0) }}</td>
-                                    <td class="px-4 py-2 border">{{ $entry->updated_at->diffForHumans() }}</td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="4" class="px-4 py-3 text-center text-gray-500">No market price data available.</td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
+<h3 class="text-lg font-semibold text-green-700 mb-2"> Market Prices</h3>
+<div class="overflow-x-auto">
+    <table class="min-w-full border border-gray-200 text-sm text-left">
+        <thead class="bg-gray-50">
+            <tr>
+                <th class="px-4 py-2 border">Crop</th>
+                <th class="px-4 py-2 border">Region</th>
+                <th class="px-4 py-2 border">Price (TZS/kg)</th>
+                <th class="px-4 py-2 border">Updated</th>
+            </tr>
+        </thead>
+       <tbody>
+    @forelse($marketData as $entry)
+        <tr class="@if($loop->odd) bg-gray-50 @endif">
+            <td class="px-4 py-2 border">{{ $entry->crop?->name ?? 'Unknown Crop' }}</td>
+            <td class="px-4 py-2 border">{{ $entry->region?->name ?? 'Unknown Region' }}</td>
+            <td class="px-4 py-2 border">{{ number_format($entry->price_per_kg, 0) }}</td>
+            <td class="px-4 py-2 border">{{ $entry->updated_at->diffForHumans() }}</td>
+        </tr>
+    @empty
+        <tr>
+            <td colspan="4" class="px-4 py-3 text-center text-gray-500">No market price data available.</td>
+        </tr>
+    @endforelse
+</tbody>
+    </table>
+</div>
+
 
             </div>
         </main>

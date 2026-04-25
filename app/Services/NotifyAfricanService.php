@@ -74,8 +74,9 @@ class NotifyAfricanService
     public function sendBulkSms(array $phones, string $message)
     {
         try {
+            $recipients = collect($phones)->map(fn($p) => ['number' => $p])->values()->all();
             $payload = [
-                'recipients' => $phones,
+                'recipients' => $recipients,
                 'sms' => $message,
                 'schedule' => 'none',
                 'sender_id' => config('services.notifyafrican.sender_id'),

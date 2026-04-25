@@ -73,7 +73,7 @@ class RegisteredUserController extends Controller
 
         auth()->login($user);   // or Auth::login($user);
         $notify = new NotifyAfricanService();
-        $notify->sendSms($user->phone, __('Welcome to our platform! Your registration is successful.'));
+        $notify->sendSms($farmer->phone, __('Karibu kwenye mfumo wa Agrtech! usajili wako umefanikiwa .'));
 
         return redirect()->route('userdashboard');  // adjust to your post-register route
     }

@@ -58,7 +58,7 @@
 
                     <div class="space-x-2">
                         <a href="{{ route('sms_campaigns.create') }}"
-                           class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded">
+                           class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
                             + {{ __('New Campaign') }}
                         </a>
                     </div>
@@ -104,6 +104,11 @@
                                                            class="text-blue-600 hover:text-blue-800">
                                                             {{ __('View') }}
                                                         </a>
+                                                        <form action="{{ route('sms_campaigns.destroy', $campaign) }}" method="POST" onsubmit="return confirm('Delete this campaign?');">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="text-red-600 hover:text-red-800 ml-2">Delete</button>
+                                                        </form>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -143,17 +148,16 @@
                     <div class="bg-gray-50 border border-gray-200 rounded p-4 text-sm mt-4">
                         <strong>{{ __('Registration Flow:') }}</strong>
                         <ol class="list-decimal ml-4 mt-2 space-y-1">
-                            <li>{{ __('Farmer dials *456*1#') }}</li>
+                            <li>{{ __('Farmer dials *384*24720#') }}</li>
                             <li>{{ __('Selects "Jisajili kama Mkulima"') }}</li>
-                            <li>{{ __('Enters name, location, and crops') }}</li>
-                            <li>{{ __('Chooses preferred language') }}</li>
+                            <li>{{ __('Enters jina, mkoa, and mazao') }}</li>
                             <li>{{ __('Receives confirmation SMS') }}</li>
                         </ol>
                     </div>
 
                     <div class="bg-yellow-100 text-yellow-800 mt-4 p-3 rounded text-sm">
                         <strong>{{ __('Setup Required:') }}</strong><br>
-                        {{ __('Contact your telecom provider to configure the USSD shortcode') }} <code>*456*1#</code>.
+                        {{ __('Contact your telecom provider to configure the USSD shortcode') }} <code>*384*24720#</code>.
                     </div>
                 </div>
             </div>

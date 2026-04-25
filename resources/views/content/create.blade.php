@@ -140,5 +140,4 @@
     });
   </script>
   <script src="https://widget.cxgenie.ai/widget.js" data-aid="0a9c4453-a60a-4634-a949-c732325c607a"></script>
-
 </x-app-layout>

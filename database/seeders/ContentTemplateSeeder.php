@@ -10,18 +10,18 @@ class ContentTemplateSeeder extends Seeder
     public function run(): void
     {
         $templates = [
-            // Weather alerts
+            // Arifa za hali ya hewa
             [
                 'title'    => 'Mvua Kubwa Inatarajiwa',
                 'category' => 'weather',
                 'language' => 'sw',
                 'content'  => 'Tahadhari: mvua kubwa inatarajiwa wiki hii katika maeneo yako.',
                 'regions'  => ['Mbeya', 'Iringa'],
-                'crops'    => ['maize', 'beans'],
+                'crops'    => ['mahindi', 'maharage'],
                 'status'   => 'published',
             ],
             [
-                'title'    => 'Heavy Rainfall Expected',
+                'title'    => 'Mvua Kubwa Inatarajiwa (EN)',
                 'category' => 'weather',
                 'language' => 'en',
                 'content'  => 'Alert: heavy rainfall expected this week in your area.',
@@ -30,14 +30,14 @@ class ContentTemplateSeeder extends Seeder
                 'status'   => 'published',
             ],
 
-            // Pest control
+            // Udhibiti wa wadudu
             [
                 'title'    => 'Dhibiti Wadudu',
                 'category' => 'pest',
                 'language' => 'sw',
                 'content'  => 'Tumia dawa ya viwandani kudhibiti funza kwenye mahindi.',
                 'regions'  => ['Dodoma'],
-                'crops'    => ['maize'],
+                'crops'    => ['mahindi'],
                 'status'   => 'published',
             ],
             [
@@ -50,14 +50,14 @@ class ContentTemplateSeeder extends Seeder
                 'status'   => 'published',
             ],
 
-            // Farming advice
+            // Ushauri wa kilimo
             [
                 'title'    => 'Mbinu za Kilimo Bora',
                 'category' => 'advice',
                 'language' => 'sw',
                 'content'  => 'Pandikiza mazao mapya mapema kabla ya mvua kuanza.',
                 'regions'  => ['Mwanza', 'Shinyanga'],
-                'crops'    => ['rice'],
+                'crops'    => ['mchele'],
                 'status'   => 'published',
             ],
             [

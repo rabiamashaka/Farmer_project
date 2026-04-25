@@ -26,7 +26,7 @@ class SendTestBulkSms extends Command
      */
     public function handle(NotifyAfricanService $sms)
     {
-        $phones = ['+255700000001', '+255700000002']; // Replace with real test numbers if needed
+        $phones = ['255712812764', '255621437847']; // Replace with real test numbers
         $message = 'This is a test bulk SMS from Artisan command.';
 
         $this->info('Sending bulk SMS...');
@@ -35,4 +35,4 @@ class SendTestBulkSms extends Command
         $this->info('Bulk SMS send result:');
         $this->line(print_r($result, true));
     }
-} 
+}

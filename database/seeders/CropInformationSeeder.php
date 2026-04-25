@@ -10,42 +10,44 @@ class CropInformationSeeder extends Seeder
 {
     public function run(): void
     {
-        $maize = Crop::where('name', 'Maize')->first();
-        $rice = Crop::where('name', 'Rice')->first();
+        // Tafuta mazao husika kwa jina la Kiswahili
+        $mahindi = Crop::where('name', 'mahindi')->first();
+        $mchele = Crop::where('name', 'mchele')->first();
 
-        if ($maize) {
+        if ($mahindi) {
             CropInformation::create([
-                'crop_id' => $maize->id,
+                'crop_id' => $mahindi->id,
                 'type' => 'tip',
-                'title' => 'Maize Planting Tip',
-                'description' => 'Plant maize at the onset of rains for best results.',
+                'title' => 'Ushauri wa Kupanda Mahindi',
+                'description' => 'Panda mahindi mwanzoni mwa msimu wa mvua kwa matokeo bora.',
             ]);
             CropInformation::create([
-                'crop_id' => $maize->id,
+                'crop_id' => $mahindi->id,
                 'type' => 'pest_control',
-                'title' => 'Armyworm Control',
-                'description' => 'Monitor for armyworm and use recommended pesticides early.',
+                'title' => 'Udhibiti wa Funza wa Jeshi',
+                'description' => 'Fuatilia mashamba kwa funza na tumia dawa mapema.',
             ]);
             CropInformation::create([
-                'crop_id' => $maize->id,
+                'crop_id' => $mahindi->id,
                 'type' => 'design',
-                'title' => '2025 Planting Pattern',
-                'description' => 'Try the new row spacing for higher yields.',
+                'title' => 'Mpangilio wa Kupanda 2025',
+                'description' => 'Tumia nafasi mpya ya mistari ili kuongeza mavuno.',
             ]);
         }
-        if ($rice) {
+
+        if ($mchele) {
             CropInformation::create([
-                'crop_id' => $rice->id,
+                'crop_id' => $mchele->id,
                 'type' => 'tip',
-                'title' => 'Rice Watering',
-                'description' => 'Keep rice fields flooded during early growth.',
+                'title' => 'Umwagiliaji wa Mchele',
+                'description' => 'Hakikisha shamba la mchele lina maji ya kutosha wakati wa ukuaji wa awali.',
             ]);
             CropInformation::create([
-                'crop_id' => $rice->id,
+                'crop_id' => $mchele->id,
                 'type' => 'pest_control',
-                'title' => 'Rice Blast Prevention',
-                'description' => 'Apply fungicide at the first sign of rice blast.',
+                'title' => 'Kinga dhidi ya Ukungu wa Mchele',
+                'description' => 'Tumia dawa ya kuua kuvu mara tu unapogundua dalili za ukungu.',
             ]);
         }
     }
-} 
+}

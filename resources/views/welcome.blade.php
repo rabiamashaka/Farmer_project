@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <!-- DEBUG: app()->getLocale() = {{ app()->getLocale() }}, session('locale') = {{ session('locale') }} -->
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full bg-gray-50">
 <head>
@@ -34,7 +34,7 @@
     </script>
 @vite(['resources/css/app.css','resources/js/app.js'])
 </head>
-
+<body class="h-full flex flex-col">
     <!-- ========== Navbar ========== -->
     <header class="w-full bg-white/70 backdrop-blur border-b border-gray-100 shadow-sm sticky top-0 z-50">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
@@ -89,40 +89,67 @@
                 <a href="{{ route('login') }}" class="inline-block px-6 py-3 rounded-full text-base font-semibold text-primary-600 ring-1 ring-primary-600 hover:bg-primary-50 transition">{{ __('Login') }}</a>
             </div>
 
-            <!-- ===== Feature Cards ===== -->
-            <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-                <!-- SMS Notifications -->
-                <div class="bg-white border border-gray-100 shadow-sm rounded-2xl p-6 flex flex-col items-center text-center">
-                    <div class="w-10 h-10 flex items-center justify-center rounded-full bg-primary-50 text-primary-600 mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8h2a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2v-8a2 2 0 012-2h2M9 6h6m-6 4h6m-6 4h6" /></svg>
-                    </div>
-                    <h3 class="font-semibold text-gray-800 mb-1">{{ __('SMS Notifications') }}</h3>
-                    <p class="text-sm text-gray-500">{{ __('Receive farming tips') }}</p>
-                </div>
+           
 
-                <!-- Weather Updates -->
-                <div class="bg-white border border-gray-100 shadow-sm rounded-2xl p-6 flex flex-col items-center text-center">
-                    <div class="w-10 h-10 flex items-center justify-center rounded-full bg-primary-50 text-primary-600 mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75V4.5m6.364 2.146l1.061-1.061M19.5 12h2.25M18.364 17.864l1.061 1.061M12 19.5v2.25M4.575 18.925l-1.061 1.061M4.5 12H2.25M5.636 6.646L4.575 5.586" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                    </div>
-                    <h3 class="font-semibold text-gray-800 mb-1">{{ __('Weather Updates') }}</h3>
-                    <p class="text-sm text-gray-500">{{ __('Get timely forecasts') }}</p>
-                </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      @php
+        $features = [
+          ['title' => 'Accurate Weather', 'description' => 'Get reliable local forecasts to help plan your planting, irrigation, and harvesting.'],
+          ['title' => 'Market Prices', 'description' => 'Stay informed about the latest prices of your crops in different markets.'],
+          ['title' => 'Best Farming Practices', 'description' => 'Learn new and efficient methods of planting, weeding, and harvesting.'],
+          ['title' => 'Disease & Pest Alerts', 'description' => 'Early detection and solutions to protect your crops from diseases and pests.'],
+          ['title' => 'Personalized SMS', 'description' => 'Messages based on your crop, region, and preferred language.'],
+          ['title' => 'Works Without Internet', 'description' => 'No smartphone? No problem. SMS works on all phones.']
+        ];
+      @endphp
 
-                <!-- Market Prices -->
-                <div class="bg-white border border-gray-100 shadow-sm rounded-2xl p-6 flex flex-col items-center text-center">
-                    <div class="w-10 h-10 flex items-center justify-center rounded-full bg-primary-50 text-primary-600 mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.593 4.593a.75.75 0 001.06 0L21.75 10.5" /></svg>
-                    </div>
-                    <h3 class="font-semibold text-gray-800 mb-1">{{ __('Market Prices') }}</h3>
-                    <p class="text-sm text-gray-500">{{ __('Stay updated prices') }}</p>
-                </div>
+      @foreach ($features as $feature)
+        <div class="bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition p-6">
+          <h3 class="text-xl font-semibold mb-2">{{ $feature['title'] }}</h3>
+          <p class="text-gray-600 text-sm">{{ $feature['description'] }}</p>
+        </div>
+      @endforeach
+    </div>
+  </section>
 
-                <!-- Mobile Friendly -->
-                <div class="bg-white border border-gray-100 shadow-sm rounded-2xl p-6 flex flex-col items-center text-center">
-                    <div class="w-10 h-10 flex items-center justify-center rounded-full bg-primary-50 text-primary-600 mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6h-7.5a.75.75 0 00-.75.75v10.5c0 .414.336.75.75.75h7.5a.75.75 0 00.75-.75V6.75a.75.75 0 00-.75-.75z" /></svg>
-                    </div>
-                    <h3 class="font-semibold text-gray-800 mb-1">{{ __('Mobile Friendly') }}
+  <!-- How It Works Section -->
+  <section class="max-w-7xl mx-auto px-4 py-16">
+    <h2 class="text-3xl font-bold text-center mb-6">How AgriSMS Works</h2>
+    <p class="text-center text-gray-600 mb-12">Simple steps to start receiving SMS advice for your farm.</p>
+
 
 <script src="https://widget.cxgenie.ai/widget.js" data-aid="0a9c4453-a60a-4634-a949-c732325c607a"></script>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition p-6 text-center">
+        <div class="text-4xl font-bold text-blue-600 mb-4">1</div>
+        <h3 class="text-xl font-semibold mb-2">Register Your Farm</h3>
+        <p class="text-gray-600 text-sm">Sign up with your location, crops, and language to get personalized content.</p>
+      </div>
+
+      <div class="bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition p-6 text-center">
+        <div class="text-4xl font-bold text-blue-600 mb-4">2</div>
+        <h3 class="text-xl font-semibold mb-2">Receive SMS Alerts</h3>
+        <p class="text-gray-600 text-sm">Get useful farming info on weather, markets, and tips directly on your phone.</p>
+      </div>
+
+      <div class="bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition p-6 text-center">
+        <div class="text-4xl font-bold text-blue-600 mb-4">3</div>
+        <h3 class="text-xl font-semibold mb-2">Grow and Earn More</h3>
+        <p class="text-gray-600 text-sm">Make smart decisions, improve productivity, and increase your profits.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="text-center py-12 bg-blue-50">
+    <h3 class="text-2xl font-semibold mb-4">Ready to Boost Your Farming?</h3>
+    <p class="text-gray-700 mb-6">Join thousands of Tanzanian farmers improving their yields with AgriSMS.</p>
+    <a href="{{ route('register') }}" class="inline-block px-6 py-3 bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-700 transition">
+      Register Now
+    </a>
+  </section>
+
+</body>
+</html>
+
