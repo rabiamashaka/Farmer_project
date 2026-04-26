@@ -1,0 +1,10 @@
+{
+	admin off
+}
+
+:80 {
+	root * /app/public
+	encode gzip
+	php_fastcgi localhost:9000
+	file_server
+}
