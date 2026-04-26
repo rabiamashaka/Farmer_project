@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     DashboardController,
@@ -115,4 +116,18 @@ Route::match(['get', 'post'], '/test-notifyafrican-sms', function (Request $requ
         return response()->json($result);
     }
     return view('test-sms');
+});
+
+/* ----------  Health Check Routes ---------- */
+Route::get('/health', function () {
+    return response()->json(['status' => 'ok', 'timestamp' => now()]);
+});
+
+Route::get('/health/db', function () {
+    try {
+        DB::connection()->getPdo();
+        return response()->json(['status' => 'ok', 'database' => 'connected']);
+    } catch (\Exception $e) {
+        return response()->json(['status' => 'error', 'database' => $e->getMessage()], 500);
+    }
 });
